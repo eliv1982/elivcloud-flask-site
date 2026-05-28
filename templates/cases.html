@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}ElivCloud | Кейсы{% endblock %}
+
+{% block content %}
+<section class="container">
+  <div class="mb-4">
+    <h1 class="display-6 fw-bold mb-2">Кейсы ElivCloud</h1>
+    <p class="text-secondary mb-0">
+      Портфолио практических AI-решений в prompt engineering, ботах, RAG-ассистентах и автоматизации бизнес-процессов.
+    </p>
+  </div>
+  <div class="row g-3">
+    {% for case in cases %}
+      <div class="col-md-6">
+        <article class="card card-soft h-100">
+          <div class="card-body d-flex flex-column">
+            <h2 class="h4">{{ case.title }}</h2>
+            <p class="text-secondary">{{ case.summary }}</p>
+            <p class="mb-2"><strong>Задача:</strong> {{ case.task }}</p>
+            <p class="mb-3"><strong>Результат:</strong> {{ case.result }}</p>
+            <a href="{{ url_for('case_detail', slug=case.slug) }}" class="btn btn-outline-info mt-auto">Подробнее</a>
+          </div>
+        </article>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

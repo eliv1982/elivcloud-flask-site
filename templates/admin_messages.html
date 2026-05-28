@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}ElivCloud | Заявки{% endblock %}
+
+{% block content %}
+<section class="container">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <h1 class="h3 mb-0">Заявки из формы контактов</h1>
+    <a href="{{ url_for('admin_logout') }}" class="btn btn-sm btn-outline-light">Выйти</a>
+  </div>
+
+  <div class="card card-soft">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Контакт</th>
+              <th>Тема</th>
+              <th>Сообщение</th>
+              <th>Статус</th>
+              <th>Дата</th>
+              <th>Действия</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in messages %}
+              <tr>
+                <td>{{ item.id }}</td>
+                <td>
+                  <strong>{{ item.name }}</strong><br />
+                  <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+                  {% if item.phone %}<br /><span class="small text-secondary">{{ item.phone }}</span>{% endif %}
+                </td>
+                <td>{{ item.subject }}</td>
+                <td style="min-width: 220px;">{{ item.message }}</td>
+                <td>
+                  {% if item.is_read %}
+                    <span class="badge text-bg-success">Прочитано</span>
+                  {% else %}
+                    <span class="badge text-bg-warning">Новая</span>
+                  {% endif %}
+                </td>
+                <td class="small text-secondary">{{ item.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>
+                  <div class="d-flex gap-2">
+                    {% if not item.is_read %}
+                      <form method="post" action="{{ url_for('admin_mark_read', message_id=item.id) }}">
+                        {{ read_form.hidden_tag() }}
+                        <button type="submit" class="btn btn-sm btn-outline-success">Отметить</button>
+                      </form>
+                    {% endif %}
+                    <form method="post" action="{{ url_for('admin_delete_message', message_id=item.id) }}" onsubmit="return confirm('Удалить заявку?');">
+                      {{ delete_form.hidden_tag() }}
+                      <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="7" class="text-center py-4 text-secondary">Пока нет заявок.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

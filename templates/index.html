@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}ElivCloud | Главная{% endblock %}
+
+{% block content %}
+<section class="container mb-5">
+  <div class="row g-4 align-items-start">
+    <div class="col-lg-8">
+      <span class="badge rounded-pill text-bg-info-subtle text-info-emphasis mb-3 px-3 py-2">
+        Prompt Engineering / AI Automation
+      </span>
+      <h1 class="display-4 fw-bold mb-3">ElivCloud</h1>
+      <h2 class="h3 text-info mb-3">AI-боты, RAG-ассистенты и автоматизация бизнес-процессов</h2>
+      <p class="lead text-secondary-emphasis">
+        Помогаю бизнесу, экспертам и небольшим командам превращать повторяющиеся задачи в понятные AI-процессы:
+        боты, ассистенты по базе знаний, обработка обращений, отзывов, заявок, документов и внутренних сценариев.
+      </p>
+      <div class="d-flex flex-wrap gap-2 mt-4">
+        <a href="{{ url_for('cases') }}" class="btn btn-accent px-4">Посмотреть кейсы</a>
+        <a href="{{ url_for('contact') }}" class="btn btn-outline-info px-4">Обсудить задачу</a>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="glass-panel p-4 h-100">
+        <h3 class="h5 mb-3 text-light">Как строится работа</h3>
+        <ul class="text-secondary mb-0">
+          <li>Фокус на реальных бизнес-процессах и рутинных задачах</li>
+          <li>Прототипы с понятной логикой и форматом</li>
+          <li>Постепенное масштабирование после проверки пользы</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container mb-5">
+  <h2 class="mb-3">Кому и с какими задачами я помогаю</h2>
+  <p class="text-secondary">
+    Я помогаю малому бизнесу, экспертам, образовательным, юридическим и консультационным проектам автоматизировать рутинные
+    бизнес-процессы с помощью AI-инструментов: от обработки обращений и отзывов до работы с документами, базами знаний и
+    внутренними сценариями.
+  </p>
+  <div class="row g-3 mt-1">
+    <div class="col-md-6 col-lg-3"><div class="card card-soft h-100"><div class="card-body"><h3 class="h6 mb-0">Клиентские обращения и заявки</h3></div></div></div>
+    <div class="col-md-6 col-lg-3"><div class="card card-soft h-100"><div class="card-body"><h3 class="h6 mb-0">Отзывы и обратная связь</h3></div></div></div>
+    <div class="col-md-6 col-lg-3"><div class="card card-soft h-100"><div class="card-body"><h3 class="h6 mb-0">Документы и базы знаний</h3></div></div></div>
+    <div class="col-md-6 col-lg-3"><div class="card card-soft h-100"><div class="card-body"><h3 class="h6 mb-0">Telegram-боты и AI-workflows</h3></div></div></div>
+  </div>
+</section>
+
+<section class="container mb-5">
+  <h2 class="mb-3">Польза для клиента</h2>
+  <div class="row g-3">
+    <div class="col-md-6 col-lg-4">
+      <div class="card card-soft h-100"><div class="card-body"><h3 class="h5">Экономия времени</h3><p class="mb-0">AI-помощник берёт на себя повторяющиеся задачи: первичную обработку обращений, черновики ответов, классификацию, краткие отчёты и подготовку данных.</p></div></div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <div class="card card-soft h-100"><div class="card-body"><h3 class="h5">Меньше хаоса в процессах</h3><p class="mb-0">Отзывы, заявки, документы и вопросы клиентов можно разложить по темам, срочности и типу запроса.</p></div></div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <div class="card card-soft h-100"><div class="card-body"><h3 class="h5">Быстрый первый прототип</h3><p class="mb-0">Можно начать с небольшой задачи, проверить пользу на реальных примерах и только потом развивать решение.</p></div></div>
+    </div>
+    <div class="col-md-6 col-lg-6">
+      <div class="card card-soft h-100"><div class="card-body"><h3 class="h5">Ответы по вашим материалам</h3><p class="mb-0">RAG-подход помогает ассистенту отвечать с опорой на документы, инструкции и базу знаний, а не “из головы”.</p></div></div>
+    </div>
+    <div class="col-md-6 col-lg-6">
+      <div class="card card-soft h-100"><div class="card-body"><h3 class="h5">Понятный процесс работы</h3><p class="mb-0">Сначала разбираем задачу, затем собираем прототип, тестируем на примерах и дорабатываем логику.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="container mb-5">
+  <h2 class="mb-3">Чем помогаю</h2>
+  <div class="glass-panel p-4">
+    <ul class="mb-0 text-secondary">
+      <li>AI-боты для клиентских обращений;</li>
+      <li>Telegram-боты;</li>
+      <li>RAG-ассистенты по базе знаний;</li>
+      <li>обработка отзывов и заявок;</li>
+      <li>автоматизация через n8n;</li>
+      <li>Langflow / LangChain workflows;</li>
+      <li>structured prompts и стабильные форматы ответов;</li>
+      <li>интеграции с Google Sheets, файлами, API и базами данных.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="container">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <h2 class="mb-0">Кейсы</h2>
+    <a href="{{ url_for('cases') }}" class="btn btn-outline-info btn-sm">Открыть все кейсы</a>
+  </div>
+  <div class="row g-3">
+    {% for case in cases %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card card-soft h-100">
+          <div class="card-body d-flex flex-column">
+            <h3 class="h5">{{ case.title }}</h3>
+            <p class="text-secondary">{{ case.summary }}</p>
+            <a href="{{ url_for('case_detail', slug=case.slug) }}" class="btn btn-sm btn-outline-info mt-auto">Подробнее</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

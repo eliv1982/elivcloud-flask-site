@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}ElivCloud | {{ case.title }}{% endblock %}
+
+{% block content %}
+<section class="container">
+  <a href="{{ url_for('cases') }}" class="btn btn-sm btn-outline-info mb-3">← Назад к кейсам</a>
+  <article class="card card-soft">
+    <div class="card-body p-4 p-lg-5">
+      <h1 class="h2 mb-3">{{ case.title }}</h1>
+      <p class="lead text-secondary">{{ case.summary }}</p>
+
+      <div class="row g-4 mt-1">
+        <div class="col-lg-6">
+          <h2 class="h5">Задача</h2>
+          <p>{{ case.task }}</p>
+        </div>
+        <div class="col-lg-6">
+          <h2 class="h5">Решение</h2>
+          <p>{{ case.solution }}</p>
+        </div>
+        <div class="col-12">
+          <h2 class="h5">Результат</h2>
+          <p>{{ case.result }}</p>
+        </div>
+      </div>
+
+      <h2 class="h5 mt-4">Подходы</h2>
+      <div class="d-flex flex-wrap gap-2 mt-2">
+        {% for item in case.approaches %}
+          <span class="badge text-bg-info-subtle text-info-emphasis px-3 py-2">{{ item }}</span>
+        {% endfor %}
+      </div>
+    </div>
+  </article>
+</section>
+{% endblock %}
