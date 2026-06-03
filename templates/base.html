@@ -21,6 +21,9 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    {% if not request.path.startswith('/admin') %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_widget.css') }}" />
+    {% endif %}
     {% block head %}{% endblock %}
   </head>
   <body>
@@ -89,5 +92,44 @@
     ></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% block scripts %}{% endblock %}
+
+    {% if not request.path.startswith('/admin') %}
+    <div id="chat-widget" class="chat-widget" aria-live="polite">
+      <button id="chat-widget-toggle" class="chat-widget-toggle" type="button" aria-label="Открыть чат">
+        &#x1F4AC;
+      </button>
+
+      <section id="chat-widget-panel" class="chat-widget-panel chat-widget-panel--hidden" aria-label="AI-консультант ElivCloud">
+        <header class="chat-widget-header">
+          <div>
+            <strong>AI-консультант ElivCloud</strong>
+            <p>Отвечаю по услугам, кейсам и процессу работы</p>
+          </div>
+          <button id="chat-widget-close" class="chat-widget-close" type="button" aria-label="Закрыть чат">&times;</button>
+        </header>
+
+        <div id="chat-widget-messages" class="chat-widget-messages">
+          <div class="chat-message chat-message-assistant">
+            Здравствуйте! Я могу подсказать, чем занимается ElivCloud, какие есть кейсы и как обсудить задачу.
+          </div>
+        </div>
+
+        <form id="chat-widget-form" class="chat-widget-form">
+          <input
+            id="chat-widget-input"
+            class="chat-widget-input"
+            type="text"
+            name="message"
+            placeholder="Напишите вопрос..."
+            autocomplete="off"
+            maxlength="2000"
+          >
+          <button id="chat-widget-submit" class="chat-widget-submit" type="submit">&#9658;</button>
+        </form>
+      </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/chat_widget.js') }}"></script>
+    {% endif %}
   </body>
 </html>
