@@ -1,0 +1,18 @@
+services:
+  web:
+    build: .
+    container_name: elivcloud-site
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    environment:
+      # Override DATABASE_URL with an absolute path inside the container
+      # so SQLite always finds the file regardless of CWD
+      - DATABASE_URL=sqlite:////app/instance/site.db
+    restart: unless-stopped
+    volumes:
+      # Knowledge base source files + generated FAISS index
+      - ./data:/app/data
+      # SQLite database (contact messages, admin) — persisted on host
+      - ./instance:/app/instance

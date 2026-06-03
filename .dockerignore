@@ -1,0 +1,13 @@
+.venv
+venv
+__pycache__
+*.pyc
+*.pyo
+.git
+.gitignore
+.env
+*.db
+instance/*.db
+data/faiss_index.bin
+data/faqs_metadata.npy
+screenshots

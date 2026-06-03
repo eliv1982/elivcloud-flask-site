@@ -128,10 +128,74 @@ Invoke-RestMethod -Uri "http://127.0.0.1:5000/chat" -Method Post -ContentType "a
 - Backend отвечает на основе FAISS/RAG базы знаний из `data/`.
 - Реализован на vanilla JS + CSS, без сторонних frontend-зависимостей.
 
-## Деплой
+## Docker deployment
 
-Для публичного деплоя Flask-приложение можно запускать через gunicorn за nginx.
+Проект поставляется с `Dockerfile` и `docker-compose.yml` для запуска в контейнере.
+
+### Подготовка
+
+Убедитесь, что `.env` содержит все нужные переменные (см. `.env.example`):
+
+```text
+SECRET_KEY=...
+OPENAI_API_KEY=...
+OPENAI_EMBEDDING_MODEL=text-embedding-3-small
+OPENAI_CHAT_MODEL=gpt-4o-mini
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=...
+```
+
+### Сборка образа
 
 ```bash
-gunicorn --bind 127.0.0.1:8001 app
+docker compose build
+```
+
+### Построить FAISS-индекс внутри контейнера
+
+```bash
+docker compose run --rm web python build_index.py
+```
+
+Индекс сохранится в `./data/` через volume и будет доступен при следующем запуске.
+
+### Запустить сайт
+
+```bash
+docker compose up -d
+```
+
+### Проверить состояние
+
+```bash
+docker compose ps
+docker compose logs -f web
+```
+
+### Остановить
+
+```bash
+docker compose down
+```
+
+### Ручная проверка после запуска
+
+- Открыть [http://127.0.0.1:5000/](http://127.0.0.1:5000/) — сайт должен открываться.
+- Нажать кнопку 💬 в правом нижнем углу — виджет открывается, приветствие отображается.
+- Спросить «Чем занимается ElivCloud?» — ответ от RAG-ассистента.
+- Отправить POST на `/chat` и убедиться, что статус 200.
+
+### Volumes
+
+| Volume | Назначение |
+|---|---|
+| `./data:/app/data` | Исходные файлы базы знаний + FAISS-индекс |
+| `./instance:/app/instance` | SQLite база данных (контактные заявки, сессии) |
+
+## Деплой без Docker
+
+Для запуска через gunicorn напрямую за nginx:
+
+```bash
+gunicorn --bind 127.0.0.1:8001 app:app
 ```
