@@ -30,6 +30,14 @@
           <span class="badge text-bg-info-subtle text-info-emphasis px-3 py-2">{{ item }}</span>
         {% endfor %}
       </div>
+
+      {% if case.repo_url %}
+      <div class="mt-4">
+        <a href="{{ case.repo_url }}" class="btn btn-outline-info" target="_blank" rel="noopener noreferrer">
+          Открыть репозиторий
+        </a>
+      </div>
+      {% endif %}
     </div>
   </article>
 </section>
