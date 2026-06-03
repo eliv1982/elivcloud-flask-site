@@ -6,11 +6,13 @@ from flask import (
     Flask,
     abort,
     flash,
+    jsonify,
     redirect,
     render_template,
     request,
     url_for,
 )
+from openai import OpenAI
 from flask_login import (
     LoginManager,
     UserMixin,
@@ -26,6 +28,12 @@ from wtforms import PasswordField, StringField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Email, Length
 
 from config import Config
+from chat_backend import (
+    MAX_MESSAGE_LENGTH,
+    build_chat_messages,
+    format_rag_context,
+    normalize_chat_history,
+)
 
 
 load_dotenv()
@@ -329,6 +337,71 @@ def create_app() -> Flask:
         logout_user()
         flash("Вы вышли из админ-панели.", "info")
         return redirect(url_for("admin_login"))
+
+    @app.route("/chat", methods=["POST"])
+    @csrf.exempt
+    def chat():
+        if not request.is_json:
+            return jsonify({"error": "Ожидается JSON-запрос."}), 400
+
+        data = request.get_json(silent=True) or {}
+        user_message = data.get("message", "")
+
+        if not isinstance(user_message, str) or not user_message.strip():
+            return jsonify({"error": "Поле 'message' обязательно и должно быть непустой строкой."}), 400
+
+        user_message = user_message.strip()
+        if len(user_message) > MAX_MESSAGE_LENGTH:
+            return jsonify(
+                {"error": f"Сообщение слишком длинное. Максимум {MAX_MESSAGE_LENGTH} символов."}
+            ), 400
+
+        history = normalize_chat_history(data.get("history", []))
+
+        try:
+            from rag_index import search_knowledge_base
+            rag_results = search_knowledge_base(user_message, top_k=4)
+        except FileNotFoundError as exc:
+            app.logger.error("RAG index missing: %s", exc)
+            return jsonify(
+                {"error": "Индекс базы знаний не найден. Запустите: python build_index.py"}
+            ), 500
+        except RuntimeError as exc:
+            app.logger.error("RAG runtime error: %s", exc)
+            return jsonify({"error": "Ошибка конфигурации RAG. Проверьте OPENAI_API_KEY."}), 500
+
+        rag_context = format_rag_context(rag_results)
+        messages = build_chat_messages(user_message, rag_context, history)
+
+        api_key = os.getenv("OPENAI_API_KEY", "").strip()
+        if not api_key:
+            return jsonify({"error": "OPENAI_API_KEY не задан."}), 500
+
+        chat_model = os.getenv("OPENAI_CHAT_MODEL", "gpt-4o-mini")
+
+        try:
+            client = OpenAI(api_key=api_key)
+            completion = client.chat.completions.create(
+                model=chat_model,
+                messages=messages,
+                temperature=0.2,
+            )
+            answer = completion.choices[0].message.content.strip()
+        except Exception as exc:
+            app.logger.error("OpenAI chat error: %s", type(exc).__name__)
+            return jsonify({"error": "Ошибка при обращении к AI-сервису. Попробуйте позже."}), 500
+
+        sources = [
+            {
+                "score": round(r["score"], 4),
+                "source": r["source"],
+                "kind": r["kind"],
+                "question": r["question"],
+            }
+            for r in rag_results
+        ]
+
+        return jsonify({"answer": answer, "sources": sources})
 
     with app.app_context():
         db.create_all()

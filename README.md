@@ -76,6 +76,47 @@ python app.py
 - `ADMIN_USERNAME` — логин администратора.
 - `ADMIN_PASSWORD` — пароль администратора.
 
+## FAQ/RAG chat backend
+
+Сайт содержит POST endpoint `/chat` для FAQ-ассистента на основе FAISS + OpenAI.
+
+### Подготовка
+
+Добавьте в `.env`:
+
+```text
+OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_EMBEDDING_MODEL=text-embedding-3-small
+OPENAI_CHAT_MODEL=gpt-4o-mini
+```
+
+### Построить индекс
+
+```powershell
+.\.venv\Scripts\python.exe build_index.py
+```
+
+Индекс сохраняется в `data/faiss_index.bin` и `data/faqs_metadata.npy` (gitignored).
+
+### Запустить сайт
+
+```powershell
+.\.venv\Scripts\python.exe app.py
+```
+
+### Проверить `/chat` через PowerShell
+
+```powershell
+$body = @{
+  message = "Чем занимается ElivCloud?"
+  history = @()
+} | ConvertTo-Json -Depth 5
+
+Invoke-RestMethod -Uri "http://127.0.0.1:5000/chat" -Method Post -ContentType "application/json" -Body $body
+```
+
+Ответ содержит поля `answer` (текст ответа) и `sources` (список релевантных документов с полями `score`, `source`, `kind`, `question`).
+
 ## Деплой
 
 Для публичного деплоя Flask-приложение можно запускать через gunicorn за nginx.
