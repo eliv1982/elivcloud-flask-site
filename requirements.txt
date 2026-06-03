@@ -5,3 +5,6 @@ Flask-Login
 email-validator
 gunicorn
 python-dotenv
+openai
+numpy
+faiss-cpu
