@@ -2,17 +2,26 @@ services:
   web:
     build: .
     container_name: elivcloud-site
-    ports:
-      - "5000:5000"
     env_file:
       - .env
-    environment:
-      # Override DATABASE_URL with an absolute path inside the container
-      # so SQLite always finds the file regardless of CWD
-      - DATABASE_URL=sqlite:////app/instance/site.db
     restart: unless-stopped
     volumes:
-      # Knowledge base source files + generated FAISS index
       - ./data:/app/data
-      # SQLite database (contact messages, admin) — persisted on host
       - ./instance:/app/instance
+    ports:
+      - "5000:5000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=n8n_n8n_network"
+      - "traefik.http.routers.elivcloud.rule=Host(`elivcloud.org`) || Host(`www.elivcloud.org`)"
+      - "traefik.http.routers.elivcloud.entrypoints=websecure"
+      - "traefik.http.routers.elivcloud.tls=true"
+      - "traefik.http.routers.elivcloud.tls.certresolver=letsencrypt"
+      - "traefik.http.services.elivcloud.loadbalancer.server.port=5000"
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external: true
+    name: n8n_n8n_network
