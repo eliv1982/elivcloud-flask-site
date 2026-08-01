@@ -3,8 +3,17 @@
 {% block meta_description %}{{ page.meta_description }}{% endblock %}
 {% block content %}
 <section class="public-section">
-  <p class="public-provisional-notice">{{ site.provisional_notice }}</p>
+  {% if site.provisional %}<p class="public-provisional-notice">{{ site.provisional_notice }}</p>{% endif %}
   <h1>{{ page.heading }}</h1>
   <p>{{ page.intro }}</p>
+
+  <ul class="public-pillars">
+    {% for stage in page.stages %}
+    <li class="public-pillar">
+      <h2>{{ stage.title }}</h2>
+      <p>{{ stage.text }}</p>
+    </li>
+    {% endfor %}
+  </ul>
 </section>
 {% endblock %}

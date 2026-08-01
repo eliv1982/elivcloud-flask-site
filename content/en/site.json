@@ -1,16 +1,16 @@
 {
   "language": "en",
-  "provisional": true,
-  "provisional_notice": "Placeholder content for the site foundation slice. Final wording is pending Elena's review.",
+  "provisional": false,
+  "provisional_notice": "",
   "site_name": "ElivCloud",
   "meta": {
-    "default_title": "ElivCloud",
-    "default_description": "Personal website of Elena Shlenskova. Content placeholder pending final review."
+    "default_title": "ElivCloud — a personal project by Elena Shlenskova",
+    "default_description": "ElivCloud is Elena Shlenskova's personal project exploring complex systems, people and technology through law, negotiation, applied AI, automation and experimentation."
   },
   "nav": {
     "home": "Home",
     "about": "About",
-    "expertise": "Expertise",
+    "expertise": "Areas of work",
     "projects": "Projects",
     "experience": "Experience",
     "contact": "Contact",
@@ -18,54 +18,184 @@
   },
   "pages": {
     "home": {
-      "meta_title": "ElivCloud — Home",
-      "meta_description": "Placeholder homepage. Final introduction pending review.",
-      "heading": "Elena Shlenskova",
-      "intro": "This is a placeholder homepage for the site foundation slice. The final introduction text is pending Elena's review and is not yet written."
-    },
-    "about": {
-      "meta_title": "ElivCloud — About",
-      "meta_description": "Placeholder About page. Final biography pending review.",
-      "heading": "About",
-      "intro": "This is a placeholder About page. The final biography content is pending Elena's review and is not yet written."
-    },
-    "expertise": {
-      "meta_title": "ElivCloud — Expertise",
-      "meta_description": "Placeholder Expertise page outlining three provisional focus areas.",
-      "heading": "Expertise",
-      "intro": "This is a placeholder Expertise page. The three areas below are structural placeholders, not final descriptions.",
-      "pillars": [
+      "meta_title": "ElivCloud — a personal project by Elena Shlenskova",
+      "meta_description": "ElivCloud brings together law, finance, conflict and negotiation, applied AI, automation and personal technical experiments.",
+      "eyebrow": "ElivCloud · a personal project by Elena Shlenskova",
+      "heading": "Exploring complex systems, people and technology.",
+      "intro": "ElivCloud is my evolving personal project. It brings together more than 15 years of legal practice, my knowledge of social psychology, conflict and negotiation, a growing technical practice in applied AI and automation, and personal experiments with new tools.",
+      "supporting_text": "I am interested in how complex problems actually work: where interests and risks lie, how people make decisions, how knowledge becomes a process, and how an idea can be developed into a working system. This site is a space for completed projects, experiments and new directions that gradually form a larger picture.",
+      "cta_primary": "Explore projects",
+      "cta_secondary": "About me",
+      "directions": [
         {
-          "title": "Law, corporate and project finance, and international transactions",
-          "description": "Placeholder description. Pending final content."
+          "title": "Law and finance",
+          "text": "Transactions, corporate and project finance, contractual structures, risk and complex multi-party processes."
+        },
+        {
+          "title": "Conflict and negotiation",
+          "text": "Interests and positions, conflict dynamics, negotiation strategies, mediation and the human context behind decisions."
         },
         {
           "title": "Applied AI and automation",
-          "description": "Placeholder description. Pending final content."
+          "text": "AI assistants, knowledge retrieval, information processing, automation and decision support designed to remain transparent and human-controlled."
         },
         {
-          "title": "Solutions at the intersection of law, finance, knowledge management, and business processes",
-          "description": "Placeholder description. Pending final content."
+          "title": "Projects and experiments",
+          "text": "From complete working services to smaller explorations of multimodality, third-party APIs and new ways of interacting with technology."
+        }
+      ],
+      "featured_heading": "Selected projects",
+      "featured_intro": "Completed systems in which an idea moves from a domain problem and architecture to an interface, testing and a working deployment.",
+      "featured_project_ids": [
+        "vibe-order-infra",
+        "business-intake-triage-assistant",
+        "mini-crm-google-reports"
+      ],
+      "closing_heading": "I do not see the human and the technical as opposites.",
+      "closing_text": "The interesting work begins where they meet — and where observations can become ideas, experiments and working projects."
+    },
+    "about": {
+      "meta_title": "About — ElivCloud",
+      "meta_description": "About Elena Shlenskova: legal practice, finance, conflict and negotiation, applied AI, project implementation and technical experimentation.",
+      "heading": "About me",
+      "intro": "I rarely look at a problem through the lens of a single discipline. Legal practice taught me to see structure, risk and interdependence; conflict and negotiation drew my attention to interests, behaviour and interaction; technology offers a way to turn ideas into working systems.",
+      "sections": [
+        {
+          "title": "Law, transactions and finance",
+          "body": "I have more than 15 years of legal experience, focused on corporate and project finance, international transactions and legal support for business. This work taught me to navigate ambiguity, identify material risks, structure information and keep the whole problem in view."
+        },
+        {
+          "title": "People, conflict and negotiation",
+          "body": "Alongside law, I have a long-standing interest in social psychology, conflict, negotiation and mediation. Formal rules are rarely enough in a complex situation: it also matters to understand the participants' interests, the dynamics between them, the reasons behind resistance and how decisions are actually made."
+        },
+        {
+          "title": "Technology and automation",
+          "body": "My interest in applied AI began with a practical question: how can technology reduce routine work without losing context, accountability or human judgement? I am now building hands-on experience with AI systems, Python, backend development, automation, knowledge retrieval and data workflows."
+        },
+        {
+          "title": "Projects and implementation",
+          "body": "I am interested not only in the idea, but in taking it to a working state: designing the structure, data, interface, safeguards, tests, security and deployment approach."
+        },
+        {
+          "title": "Curiosity and experimentation",
+          "body": "Not every project has to solve a large business problem. Sometimes a project is a way to test an idea, understand a tool or explore a different form of interaction. This is where my experiments with multimodality, third-party APIs and generative scenarios belong."
+        }
+      ],
+      "closing": "I am less interested in choosing between the human and the technical than in exploring what emerges where they meet."
+    },
+    "expertise": {
+      "meta_title": "Areas of work — ElivCloud",
+      "meta_description": "Law and finance, social psychology and negotiation, applied AI and digital system implementation — the connected areas of Elena Shlenskova's work.",
+      "heading": "Areas of work",
+      "intro": "The same approach connects these areas: understand the real problem, see the people, risks and dependencies involved, and then design a solution that can be explained and implemented.",
+      "pillars": [
+        {
+          "title": "Law, transactions and finance",
+          "description": "Legal and transactional work with complex structures, multiple participants and decisions that must align legal, financial and operational requirements.",
+          "capabilities": [
+            "Corporate finance",
+            "Project finance",
+            "International transactions",
+            "Contractual structures",
+            "Risk allocation and analysis",
+            "Legal support for business"
+          ]
+        },
+        {
+          "title": "Social psychology, conflict and negotiation",
+          "description": "Understanding interests and positions, interaction dynamics and the human context that shapes decisions, agreements and the development of conflict.",
+          "capabilities": [
+            "Interests and positions",
+            "Conflict dynamics",
+            "Negotiation strategies",
+            "Mediation",
+            "Communication in difficult situations",
+            "Behavioural context of decisions"
+          ]
+        },
+        {
+          "title": "Applied AI and automation",
+          "description": "Systems that help retrieve, classify, summarise and route information while preserving transparency, control and the ability to examine how a result was reached.",
+          "capabilities": [
+            "AI assistants",
+            "RAG and knowledge retrieval",
+            "Structured outputs",
+            "Triage and routing",
+            "Process automation",
+            "Auditability and fallback behaviour"
+          ]
+        },
+        {
+          "title": "System design and implementation",
+          "description": "Turning a domain problem into a complete working process — from architecture, data and interfaces to testing, infrastructure and deployment.",
+          "capabilities": [
+            "Business-process analysis",
+            "Information architecture",
+            "Backend and APIs",
+            "Databases and interfaces",
+            "Testing and security",
+            "Docker and infrastructure"
+          ]
+        }
+      ],
+      "closing_heading": "The common principle",
+      "closing_text": "Whatever the domain, I begin with the same questions: what is really happening, whose interests are involved, where risk appears, what information is missing and what would make the next decision clearer."
+    },
+    "projects": {
+      "meta_title": "Projects — ElivCloud",
+      "meta_description": "Selected systems built by Elena Shlenskova, alongside smaller personal experiments with new tools and ideas.",
+      "heading": "Projects",
+      "intro": "A look at the projects I have taken through to a working result, and the smaller experiments that came from curiosity along the way.",
+      "labels": {
+        "overview": "Overview",
+        "focus": "Focus",
+        "technologies": "Technologies",
+        "view_repository": "View repository",
+        "back_to_projects": "Back to projects"
+      },
+      "selected_heading": "Selected systems",
+      "selected_intro": "Completed solutions in which a domain problem is connected with architecture, data, interfaces, testing and infrastructure.",
+      "experiments_heading": "Personal experiments",
+      "experiments_intro": "Smaller projects used to explore new tools, ideas and forms of interaction without expecting every experiment to grow into a full-scale product."
+    },
+    "experience": {
+      "meta_title": "Experience — ElivCloud",
+      "meta_description": "Elena Shlenskova's experience across legal practice, negotiation, applied AI and complete digital systems.",
+      "heading": "Experience",
+      "intro": "My experience is made up of several connected strands. Some have developed over many years, while others are newer, but today they reinforce one another.",
+      "stages": [
+        {
+          "title": "Legal practice and business support",
+          "text": "More than 15 years of work with contracts, transactions, risk and decisions that require precision, accountability and an understanding of the real business context."
+        },
+        {
+          "title": "Corporate and project finance",
+          "text": "Experience with complex financing structures, international elements, multiple participants and documentation that must remain internally coherent."
+        },
+        {
+          "title": "Conflict, negotiation and the human factor",
+          "text": "Knowledge of social psychology, conflict, negotiation and mediation helps me look beyond formal positions to the interests involved, the dynamics between participants and the reasons decisions move forward or become blocked."
+        },
+        {
+          "title": "Applied AI and automation",
+          "text": "Hands-on development of AI assistants, triage systems, knowledge retrieval, reporting, automation and structured information processing."
+        },
+        {
+          "title": "Complete digital solutions",
+          "text": "Building working systems rather than isolated prompts, including APIs, databases, interfaces, authentication, tests, security, Docker deployment and audit trails."
+        },
+        {
+          "title": "Continuous learning and experimentation",
+          "text": "Learning new tools through personal projects, from production-style services to smaller explorations of multimodality, third-party APIs and generative scenarios."
         }
       ]
     },
-    "projects": {
-      "meta_title": "ElivCloud — Projects",
-      "meta_description": "Placeholder Projects overview page.",
-      "heading": "Projects",
-      "intro": "This is a placeholder Projects overview. The summaries below are provisional and based only on already-public repository descriptions; final selection is pending Elena's review."
-    },
-    "experience": {
-      "meta_title": "ElivCloud — Experience",
-      "meta_description": "Placeholder Experience page.",
-      "heading": "Experience",
-      "intro": "This is a placeholder Experience page. The final content is pending Elena's review and is not yet written."
-    },
     "contact": {
-      "meta_title": "ElivCloud — Contact",
-      "meta_description": "Placeholder Contact page.",
+      "meta_title": "Contact — ElivCloud",
+      "meta_description": "Contact Elena Shlenskova about complex systems, negotiation, applied AI, automation and cross-disciplinary projects.",
       "heading": "Contact",
-      "intro": "Use the form below to get in touch. This page is a placeholder shell for the site foundation slice.",
+      "intro": "For conversations about complex systems, negotiation, applied AI, automation, knowledge management or cross-disciplinary projects, you can use the form below.",
+      "supporting_note": "Please do not include confidential documents, personal data or information that is not intended for public disclosure in the first message.",
       "form": {
         "name": "Name",
         "email": "Email",
@@ -73,7 +203,7 @@
         "subject": "Subject",
         "message": "Message",
         "submit": "Send",
-        "success": "Thank you! Your message has been sent.",
+        "success": "Thank you. Your message has been received.",
         "csrf_error_heading": "Request could not be verified",
         "csrf_error": "Your session or form token has expired. Please reload the page and try again.",
         "validation": {
@@ -88,11 +218,21 @@
       }
     },
     "ai_guide": {
-      "meta_title": "ElivCloud — AI Guide",
-      "meta_description": "Placeholder AI Guide page.",
+      "meta_title": "AI Guide — ElivCloud",
+      "meta_description": "AI Guide helps visitors explore ElivCloud, find relevant projects and understand where Elena's experience may be useful.",
       "heading": "AI Guide",
-      "intro": "This is a placeholder shell for the AI Guide. The assistant is intended to help you navigate this website — its content, expertise areas, and projects.",
-      "scope_notice": "The AI Guide does not provide legal advice and does not create an attorney-client relationship. It is limited to helping you find and understand information already published on this site."
+      "intro": "AI Guide helps you explore ElivCloud, find relevant projects, understand how its different themes connect, and navigate Elena's experience, interests and current work.",
+      "scope_heading": "What it can help with",
+      "scope_items": [
+        "Explain what you can find on ElivCloud",
+        "Find projects related to a particular topic",
+        "Show how law, negotiation, technology and automation connect",
+        "Help you understand where Elena's experience may be relevant to your question, idea or project",
+        "Point you to the most useful section of the site"
+      ],
+      "scope_notice": "AI Guide uses only public materials from ElivCloud. Its responses are intended for orientation and general information. They do not replace advice from an appropriate professional or constitute a professional recommendation on any matter. AI Guide has no access to private information and cannot make decisions, commitments or arrangements on Elena's behalf.",
+      "status_label": "ElivCloud guide",
+      "placeholder_message": "The updated conversational interface will be connected in the next implementation stage."
     }
   }
 }

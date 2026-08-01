@@ -4,6 +4,7 @@ application context required."""
 from __future__ import annotations
 
 import json
+import shutil
 import tempfile
 import unittest
 from pathlib import Path
@@ -14,6 +15,7 @@ from elivcloud import content as content_module  # noqa: E402
 from elivcloud.content import (  # noqa: E402
     ContentError,
     SUPPORTED_LANGUAGES,
+    get_projects_by_ids,
     load_projects_content,
     load_site_content,
 )
@@ -43,25 +45,78 @@ def _minimal_valid_site_dict(lang: str = "en") -> dict:
 
     Kept in sync with elivcloud.content's validation rules on purpose: this
     is what "valid" looks like, so negative tests can delete/break exactly
-    one thing and still know every *other* check would have passed.
+    one thing and still know every *other* check would have passed. List
+    lengths here (4 directions, 5 about sections, 4 pillars, 6 stages)
+    intentionally match the exact-count rules the loader now enforces.
     """
     return {
         "language": lang,
-        "provisional": True,
-        "provisional_notice": "notice",
+        "provisional": False,
+        "provisional_notice": "",
         "meta": {"default_title": "title", "default_description": "description"},
         "nav": {key: key for key in REQUIRED_NAV_AND_PAGE_KEYS},
         "pages": {
-            "home": _minimal_page(),
-            "about": _minimal_page(),
+            "home": {
+                **_minimal_page(),
+                "eyebrow": "Eyebrow",
+                "supporting_text": "Supporting text",
+                "cta_primary": "Primary CTA",
+                "cta_secondary": "Secondary CTA",
+                "directions": [
+                    {"title": f"Direction {i}", "text": f"Direction text {i}"}
+                    for i in range(4)
+                ],
+                "featured_heading": "Featured heading",
+                "featured_intro": "Featured intro",
+                "featured_project_ids": ["project-a"],
+                "closing_heading": "Closing heading",
+                "closing_text": "Closing text",
+            },
+            "about": {
+                **_minimal_page(),
+                "sections": [
+                    {"title": f"Section {i}", "body": f"Section body {i}"}
+                    for i in range(5)
+                ],
+                "closing": "Closing",
+            },
             "expertise": {
                 **_minimal_page(),
-                "pillars": [{"title": "Pillar", "description": "Pillar description"}],
+                "pillars": [
+                    {
+                        "title": f"Pillar {i}",
+                        "description": f"Pillar description {i}",
+                        "capabilities": ["Capability"],
+                    }
+                    for i in range(4)
+                ],
+                "closing_heading": "Closing heading",
+                "closing_text": "Closing text",
             },
-            "projects": _minimal_page(),
-            "experience": _minimal_page(),
+            "projects": {
+                **_minimal_page(),
+                "labels": {
+                    "overview": "Overview",
+                    "focus": "Focus",
+                    "technologies": "Technologies",
+                    "view_repository": "View repository",
+                    "back_to_projects": "Back to projects",
+                },
+                "selected_heading": "Selected heading",
+                "selected_intro": "Selected intro",
+                "experiments_heading": "Experiments heading",
+                "experiments_intro": "Experiments intro",
+            },
+            "experience": {
+                **_minimal_page(),
+                "stages": [
+                    {"title": f"Stage {i}", "text": f"Stage text {i}"}
+                    for i in range(6)
+                ],
+            },
             "contact": {
                 **_minimal_page(),
+                "supporting_note": "Supporting note",
                 "form": {
                     "name": "Name",
                     "email": "Email",
@@ -83,18 +138,46 @@ def _minimal_valid_site_dict(lang: str = "en") -> dict:
                     },
                 },
             },
-            "ai_guide": {**_minimal_page(), "scope_notice": "Scope notice"},
+            "ai_guide": {
+                **_minimal_page(),
+                "scope_heading": "Scope heading",
+                "scope_items": ["Scope item"],
+                "scope_notice": "Scope notice",
+                "status_label": "Status label",
+                "placeholder_message": "Placeholder message",
+            },
         },
+    }
+
+
+def _minimal_valid_experiment(index: int) -> dict:
+    return {
+        "id": f"experiment-{index}",
+        "title": f"Experiment {index}",
+        "summary": f"Summary {index}",
+        "focus": f"Focus {index}",
+        "topics": ["Topic"],
+    }
+
+
+def _minimal_valid_project(index: int) -> dict:
+    label = chr(ord("a") + index)
+    return {
+        "id": f"project-{label}",
+        "slug": f"project-{label}",
+        "title": label.upper(),
+        "summary": f"Summary {label.upper()}",
+        "details": f"Details {label.upper()}",
+        "focus": f"Focus {label.upper()}",
+        "technologies": ["Python"],
     }
 
 
 def _minimal_valid_projects_dict(lang: str = "en") -> dict:
     return {
         "language": lang,
-        "projects": [
-            {"id": "project-a", "slug": "project-a", "title": "A", "summary": "Summary A"},
-            {"id": "project-b", "slug": "project-b", "title": "B", "summary": "Summary B"},
-        ],
+        "projects": [_minimal_valid_project(i) for i in range(6)],
+        "experiments": [_minimal_valid_experiment(i) for i in range(3)],
     }
 
 
@@ -128,10 +211,11 @@ class RealContentTests(unittest.TestCase):
             with self.subTest(lang=lang):
                 data = load_site_content(lang)
                 pillars = data["pages"]["expertise"]["pillars"]
-                self.assertGreater(len(pillars), 0)
+                self.assertEqual(len(pillars), 4)
                 for pillar in pillars:
                     self.assertIn("title", pillar)
                     self.assertIn("description", pillar)
+                    self.assertGreater(len(pillar["capabilities"]), 0)
 
                 form = data["pages"]["contact"]["form"]
                 for key in (
@@ -144,19 +228,73 @@ class RealContentTests(unittest.TestCase):
                     "phone_length", "subject_length", "message_length",
                 ):
                     self.assertIn(key, form["validation"])
+                self.assertIn("supporting_note", data["pages"]["contact"])
 
                 self.assertIn("scope_notice", data["pages"]["ai_guide"])
+                self.assertGreater(len(data["pages"]["ai_guide"]["scope_items"]), 0)
+
+                projects_page = data["pages"]["projects"]
+                for key in (
+                    "selected_heading", "selected_intro",
+                    "experiments_heading", "experiments_intro",
+                ):
+                    self.assertIn(key, projects_page)
+
+    def test_site_json_home_about_experience_exact_counts(self):
+        for lang in SUPPORTED_LANGUAGES:
+            with self.subTest(lang=lang):
+                data = load_site_content(lang)
+                home = data["pages"]["home"]
+                self.assertEqual(len(home["directions"]), 4)
+                self.assertEqual(
+                    home["featured_project_ids"],
+                    [
+                        "vibe-order-infra",
+                        "business-intake-triage-assistant",
+                        "mini-crm-google-reports",
+                    ],
+                )
+                self.assertEqual(len(data["pages"]["about"]["sections"]), 5)
+                self.assertEqual(len(data["pages"]["experience"]["stages"]), 6)
 
     def test_projects_json_has_required_keys(self):
         for lang in SUPPORTED_LANGUAGES:
             with self.subTest(lang=lang):
                 data = load_projects_content(lang)
                 self.assertIn("projects", data)
-                self.assertGreater(len(data["projects"]), 0)
+                self.assertEqual(len(data["projects"]), 6)
                 for project in data["projects"]:
-                    for key in ("id", "slug", "title", "summary"):
+                    for key in ("id", "slug", "title", "summary", "details", "focus"):
                         self.assertIn(key, project)
                         self.assertIsInstance(project[key], str)
+                    self.assertGreater(len(project["technologies"]), 0)
+
+                self.assertIn("experiments", data)
+                self.assertEqual(len(data["experiments"]), 3)
+                for experiment in data["experiments"]:
+                    for key in ("id", "title", "summary", "focus"):
+                        self.assertIn(key, experiment)
+                        self.assertIsInstance(experiment[key], str)
+                    self.assertGreater(len(experiment["topics"]), 0)
+                    self.assertNotIn("slug", experiment)
+
+    def test_real_en_and_ru_content_loads_with_exactly_six_selected_projects(self):
+        for lang in SUPPORTED_LANGUAGES:
+            with self.subTest(lang=lang):
+                data = load_projects_content(lang)
+                self.assertEqual(len(data["projects"]), 6)
+                self.assertEqual(len(data["experiments"]), 3)
+
+    # -- get_projects_by_ids -------------------------------------------------
+
+    def test_get_projects_by_ids_returns_matches_in_order(self):
+        ids = ["mini-crm-google-reports", "vibe-order-infra"]
+        result = get_projects_by_ids("en", ids)
+        self.assertEqual([p["id"] for p in result], ids)
+
+    def test_get_projects_by_ids_raises_on_unknown_id(self):
+        with self.assertRaises(ContentError):
+            get_projects_by_ids("en", ["does-not-exist"])
 
     # -- 15-16: English and Russian project IDs and slugs match -----------
 
@@ -178,6 +316,12 @@ class RealContentTests(unittest.TestCase):
         self.assertEqual(en_slugs, ru_slugs)
         self.assertGreater(len(en_slugs), 0)
 
+    def test_en_and_ru_experiment_ids_match_in_order(self):
+        en_ids = [e["id"] for e in load_projects_content("en")["experiments"]]
+        ru_ids = [e["id"] for e in load_projects_content("ru")["experiments"]]
+        self.assertEqual(en_ids, ru_ids)
+        self.assertEqual(len(en_ids), 3)
+
     def test_unsupported_language_rejected(self):
         with self.assertRaises(ContentError):
             load_site_content("fr")
@@ -192,6 +336,9 @@ class MalformedSiteContentTests(unittest.TestCase):
     def setUp(self):
         self._original_dir = content_module.CONTENT_DIR
         self._tmp_root = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self._tmp_root, ignore_errors=True)
+        self.addCleanup(setattr, content_module, "CONTENT_DIR", self._original_dir)
+        self.addCleanup(content_module.clear_content_cache)
         content_module.clear_content_cache()
 
     def tearDown(self):
@@ -261,6 +408,134 @@ class MalformedSiteContentTests(unittest.TestCase):
         with self.assertRaises(ContentError):
             load_site_content("en")
 
+    def test_missing_ai_guide_scope_items_raises_content_error(self):
+        data = _minimal_valid_site_dict(lang="en")
+        del data["pages"]["ai_guide"]["scope_items"]
+        self._write_site_json("en", data)
+        with self.assertRaises(ContentError):
+            load_site_content("en")
+
+    def test_missing_home_directions_raises_content_error(self):
+        data = _minimal_valid_site_dict(lang="en")
+        del data["pages"]["home"]["directions"]
+        self._write_site_json("en", data)
+        with self.assertRaises(ContentError):
+            load_site_content("en")
+
+    def test_home_directions_must_be_exactly_four(self):
+        data = _minimal_valid_site_dict(lang="en")
+        data["pages"]["home"]["directions"] = data["pages"]["home"]["directions"][:3]
+        self._write_site_json("en", data)
+        with self.assertRaises(ContentError):
+            load_site_content("en")
+
+    def test_missing_home_featured_project_ids_raises_content_error(self):
+        data = _minimal_valid_site_dict(lang="en")
+        del data["pages"]["home"]["featured_project_ids"]
+        self._write_site_json("en", data)
+        with self.assertRaises(ContentError):
+            load_site_content("en")
+
+    def test_duplicate_home_featured_project_ids_raises_content_error(self):
+        data = _minimal_valid_site_dict(lang="en")
+        data["pages"]["home"]["featured_project_ids"] = ["project-a", "project-a"]
+        self._write_site_json("en", data)
+        with self.assertRaises(ContentError):
+            load_site_content("en")
+
+    def test_missing_about_sections_raises_content_error(self):
+        data = _minimal_valid_site_dict(lang="en")
+        del data["pages"]["about"]["sections"]
+        self._write_site_json("en", data)
+        with self.assertRaises(ContentError):
+            load_site_content("en")
+
+    def test_about_sections_must_be_exactly_five(self):
+        data = _minimal_valid_site_dict(lang="en")
+        data["pages"]["about"]["sections"] = data["pages"]["about"]["sections"][:4]
+        self._write_site_json("en", data)
+        with self.assertRaises(ContentError):
+            load_site_content("en")
+
+    def test_missing_about_closing_raises_content_error(self):
+        data = _minimal_valid_site_dict(lang="en")
+        del data["pages"]["about"]["closing"]
+        self._write_site_json("en", data)
+        with self.assertRaises(ContentError):
+            load_site_content("en")
+
+    def test_missing_expertise_pillar_capabilities_raises_content_error(self):
+        data = _minimal_valid_site_dict(lang="en")
+        del data["pages"]["expertise"]["pillars"][0]["capabilities"]
+        self._write_site_json("en", data)
+        with self.assertRaises(ContentError):
+            load_site_content("en")
+
+    def test_expertise_pillars_must_be_exactly_four(self):
+        data = _minimal_valid_site_dict(lang="en")
+        data["pages"]["expertise"]["pillars"] = data["pages"]["expertise"]["pillars"][:3]
+        self._write_site_json("en", data)
+        with self.assertRaises(ContentError):
+            load_site_content("en")
+
+    def test_missing_experience_stages_raises_content_error(self):
+        data = _minimal_valid_site_dict(lang="en")
+        del data["pages"]["experience"]["stages"]
+        self._write_site_json("en", data)
+        with self.assertRaises(ContentError):
+            load_site_content("en")
+
+    def test_experience_stages_must_be_exactly_six(self):
+        data = _minimal_valid_site_dict(lang="en")
+        data["pages"]["experience"]["stages"] = data["pages"]["experience"]["stages"][:5]
+        self._write_site_json("en", data)
+        with self.assertRaises(ContentError):
+            load_site_content("en")
+
+    def test_missing_projects_page_labels_raises_content_error(self):
+        data = _minimal_valid_site_dict(lang="en")
+        del data["pages"]["projects"]["labels"]
+        self._write_site_json("en", data)
+        with self.assertRaises(ContentError):
+            load_site_content("en")
+
+    def test_missing_projects_page_selected_heading_raises_content_error(self):
+        data = _minimal_valid_site_dict(lang="en")
+        del data["pages"]["projects"]["selected_heading"]
+        self._write_site_json("en", data)
+        with self.assertRaises(ContentError):
+            load_site_content("en")
+
+    def test_missing_projects_page_experiments_intro_raises_content_error(self):
+        data = _minimal_valid_site_dict(lang="en")
+        del data["pages"]["projects"]["experiments_intro"]
+        self._write_site_json("en", data)
+        with self.assertRaises(ContentError):
+            load_site_content("en")
+
+    def test_missing_contact_supporting_note_raises_content_error(self):
+        data = _minimal_valid_site_dict(lang="en")
+        del data["pages"]["contact"]["supporting_note"]
+        self._write_site_json("en", data)
+        with self.assertRaises(ContentError):
+            load_site_content("en")
+
+    def test_provisional_notice_may_be_empty_when_not_provisional(self):
+        data = _minimal_valid_site_dict(lang="en")
+        data["provisional"] = False
+        data["provisional_notice"] = ""
+        self._write_site_json("en", data)
+        loaded = load_site_content("en")
+        self.assertFalse(loaded["provisional"])
+
+    def test_provisional_notice_required_when_provisional_true(self):
+        data = _minimal_valid_site_dict(lang="en")
+        data["provisional"] = True
+        data["provisional_notice"] = ""
+        self._write_site_json("en", data)
+        with self.assertRaises(ContentError):
+            load_site_content("en")
+
     def test_fully_valid_minimal_site_dict_loads_successfully(self):
         # Guards the other tests in this class: if this ever fails, it
         # means _minimal_valid_site_dict() itself is out of sync with the
@@ -278,6 +553,9 @@ class MalformedProjectsContentTests(unittest.TestCase):
     def setUp(self):
         self._original_dir = content_module.CONTENT_DIR
         self._tmp_root = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self._tmp_root, ignore_errors=True)
+        self.addCleanup(setattr, content_module, "CONTENT_DIR", self._original_dir)
+        self.addCleanup(content_module.clear_content_cache)
         content_module.clear_content_cache()
 
     def tearDown(self):
@@ -294,7 +572,22 @@ class MalformedProjectsContentTests(unittest.TestCase):
     def test_fully_valid_minimal_projects_dict_loads_successfully(self):
         self._write_projects_json("en", _minimal_valid_projects_dict("en"))
         data = load_projects_content("en")
-        self.assertEqual(len(data["projects"]), 2)
+        self.assertEqual(len(data["projects"]), 6)
+        self.assertEqual(len(data["experiments"]), 3)
+
+    def test_five_selected_projects_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        data["projects"] = data["projects"][:5]
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError):
+            load_projects_content("en")
+
+    def test_seven_selected_projects_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        data["projects"].append(_minimal_valid_project(6))
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError):
+            load_projects_content("en")
 
     def test_duplicate_project_id_raises_content_error(self):
         data = _minimal_valid_projects_dict("en")
@@ -323,6 +616,219 @@ class MalformedProjectsContentTests(unittest.TestCase):
         self._write_projects_json("en", data)
         with self.assertRaises(ContentError):
             load_projects_content("en")
+
+    def test_missing_project_technologies_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        del data["projects"][0]["technologies"]
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError):
+            load_projects_content("en")
+
+    def test_missing_project_details_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        del data["projects"][0]["details"]
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError):
+            load_projects_content("en")
+
+    def test_missing_project_focus_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        del data["projects"][0]["focus"]
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError):
+            load_projects_content("en")
+
+    def test_empty_repo_url_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        data["projects"][0]["repo_url"] = ""
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError):
+            load_projects_content("en")
+
+    def test_project_without_repo_url_loads_successfully(self):
+        # repo_url is optional: a project with no known public repository
+        # simply omits the button rather than guessing a URL.
+        data = _minimal_valid_projects_dict("en")
+        self._write_projects_json("en", data)
+        loaded = load_projects_content("en")
+        self.assertNotIn("repo_url", loaded["projects"][0])
+
+    def test_project_https_repo_url_loads_successfully(self):
+        data = _minimal_valid_projects_dict("en")
+        data["projects"][0]["repo_url"] = "https://example.com/org/repo"
+        self._write_projects_json("en", data)
+        loaded = load_projects_content("en")
+        self.assertEqual(
+            loaded["projects"][0]["repo_url"], "https://example.com/org/repo"
+        )
+
+    def test_project_http_repo_url_loads_successfully(self):
+        data = _minimal_valid_projects_dict("en")
+        data["projects"][0]["repo_url"] = "http://example.com/org/repo"
+        self._write_projects_json("en", data)
+        loaded = load_projects_content("en")
+        self.assertEqual(
+            loaded["projects"][0]["repo_url"], "http://example.com/org/repo"
+        )
+
+    def test_project_relative_repo_url_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        data["projects"][0]["repo_url"] = "/relative/path"
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError) as ctx:
+            load_projects_content("en")
+        self.assertIn("repo_url", str(ctx.exception))
+        self.assertNotIn(str(self._tmp_root), str(ctx.exception))
+
+    def test_project_javascript_repo_url_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        data["projects"][0]["repo_url"] = "javascript:alert(1)"
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError) as ctx:
+            load_projects_content("en")
+        self.assertIn("repo_url", str(ctx.exception))
+
+    def test_project_file_repo_url_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        data["projects"][0]["repo_url"] = "file:///etc/passwd"
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError) as ctx:
+            load_projects_content("en")
+        self.assertIn("repo_url", str(ctx.exception))
+
+    def test_project_https_repo_url_without_host_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        data["projects"][0]["repo_url"] = "https://"
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError) as ctx:
+            load_projects_content("en")
+        self.assertIn("repo_url", str(ctx.exception))
+
+    def test_invalid_project_repo_url_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        data["projects"][0]["repo_url"] = "ftp://example.com/repo"
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError) as ctx:
+            load_projects_content("en")
+        self.assertIn("repo_url", str(ctx.exception))
+        self.assertNotIn(str(self._tmp_root), str(ctx.exception))
+
+    # -- experiments ---------------------------------------------------------
+
+    def test_missing_experiments_key_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        del data["experiments"]
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError):
+            load_projects_content("en")
+
+    def test_experiments_must_be_exactly_three(self):
+        data = _minimal_valid_projects_dict("en")
+        data["experiments"] = data["experiments"][:2]
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError):
+            load_projects_content("en")
+
+    def test_too_many_experiments_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        data["experiments"].append(_minimal_valid_experiment(3))
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError):
+            load_projects_content("en")
+
+    def test_duplicate_experiment_id_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        data["experiments"][1]["id"] = data["experiments"][0]["id"]
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError):
+            load_projects_content("en")
+
+    def test_missing_experiment_topics_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        del data["experiments"][0]["topics"]
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError):
+            load_projects_content("en")
+
+    def test_missing_experiment_focus_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        del data["experiments"][0]["focus"]
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError):
+            load_projects_content("en")
+
+    def test_experiment_empty_repo_url_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        data["experiments"][0]["repo_url"] = ""
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError):
+            load_projects_content("en")
+
+    def test_experiment_with_repo_url_loads_successfully(self):
+        data = _minimal_valid_projects_dict("en")
+        data["experiments"][0]["repo_url"] = "https://github.com/eliv1982/example"
+        self._write_projects_json("en", data)
+        loaded = load_projects_content("en")
+        self.assertEqual(
+            loaded["experiments"][0]["repo_url"], "https://github.com/eliv1982/example"
+        )
+
+    def test_experiment_http_repo_url_loads_successfully(self):
+        data = _minimal_valid_projects_dict("en")
+        data["experiments"][0]["repo_url"] = "http://example.com/lab"
+        self._write_projects_json("en", data)
+        loaded = load_projects_content("en")
+        self.assertEqual(
+            loaded["experiments"][0]["repo_url"], "http://example.com/lab"
+        )
+
+    def test_experiment_without_repo_url_loads_successfully(self):
+        data = _minimal_valid_projects_dict("en")
+        self._write_projects_json("en", data)
+        loaded = load_projects_content("en")
+        self.assertNotIn("repo_url", loaded["experiments"][0])
+
+    def test_invalid_experiment_repo_url_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        data["experiments"][0]["repo_url"] = "javascript:alert(1)"
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError) as ctx:
+            load_projects_content("en")
+        self.assertIn("repo_url", str(ctx.exception))
+        self.assertNotIn(str(self._tmp_root), str(ctx.exception))
+
+    def test_experiment_relative_repo_url_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        data["experiments"][0]["repo_url"] = "../local/repo"
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError) as ctx:
+            load_projects_content("en")
+        self.assertIn("repo_url", str(ctx.exception))
+
+    def test_experiment_file_repo_url_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        data["experiments"][0]["repo_url"] = "file:///tmp/repo"
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError) as ctx:
+            load_projects_content("en")
+        self.assertIn("repo_url", str(ctx.exception))
+
+    def test_experiment_https_repo_url_without_host_raises_content_error(self):
+        data = _minimal_valid_projects_dict("en")
+        data["experiments"][0]["repo_url"] = "https://"
+        self._write_projects_json("en", data)
+        with self.assertRaises(ContentError) as ctx:
+            load_projects_content("en")
+        self.assertIn("repo_url", str(ctx.exception))
+
+    def test_experiment_without_slug_loads_successfully(self):
+        # Experiments deliberately have no slug/detail-route/legacy-redirect
+        # shape — only the six selected projects do.
+        data = _minimal_valid_projects_dict("en")
+        self._write_projects_json("en", data)
+        loaded = load_projects_content("en")
+        for experiment in loaded["experiments"]:
+            self.assertNotIn("slug", experiment)
 
 
 if __name__ == "__main__":

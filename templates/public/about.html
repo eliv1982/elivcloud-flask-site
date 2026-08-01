@@ -3,8 +3,19 @@
 {% block meta_description %}{{ page.meta_description }}{% endblock %}
 {% block content %}
 <section class="public-section">
-  <p class="public-provisional-notice">{{ site.provisional_notice }}</p>
+  {% if site.provisional %}<p class="public-provisional-notice">{{ site.provisional_notice }}</p>{% endif %}
   <h1>{{ page.heading }}</h1>
   <p>{{ page.intro }}</p>
+
+  <ul class="public-pillars">
+    {% for section in page.sections %}
+    <li class="public-pillar">
+      <h2>{{ section.title }}</h2>
+      <p>{{ section.body }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <p>{{ page.closing }}</p>
 </section>
 {% endblock %}

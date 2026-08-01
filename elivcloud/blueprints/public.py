@@ -20,7 +20,13 @@ from flask import (
     url_for,
 )
 
-from ..content import ContentError, get_project, load_projects_content, load_site_content
+from ..content import (
+    ContentError,
+    get_project,
+    get_projects_by_ids,
+    load_projects_content,
+    load_site_content,
+)
 from ..extensions import db
 from ..forms import ContactForm
 from ..models import ContactMessage
@@ -64,11 +70,19 @@ def _projects_or_500(lang: str):
 @public_bp.route("/<any(en, ru):lang>/")
 def home(lang):
     site = _site_or_500(lang)
+    try:
+        featured_projects = get_projects_by_ids(
+            lang, site["pages"]["home"]["featured_project_ids"]
+        )
+    except ContentError as exc:
+        current_app.logger.error("Featured projects load failed for '%s': %s", lang, exc)
+        abort(500)
     return render_template(
         "public/home.html",
         site=site,
         lang=lang,
         page=site["pages"]["home"],
+        featured_projects=featured_projects,
         active_page="home",
     )
 
@@ -107,6 +121,7 @@ def projects(lang):
         lang=lang,
         page=site["pages"]["projects"],
         projects=projects_data["projects"],
+        experiments=projects_data["experiments"],
         active_page="projects",
     )
 

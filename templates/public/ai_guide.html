@@ -3,9 +3,17 @@
 {% block meta_description %}{{ page.meta_description }}{% endblock %}
 {% block content %}
 <section class="public-section">
-  <p class="public-provisional-notice">{{ site.provisional_notice }}</p>
+  {% if site.provisional %}<p class="public-provisional-notice">{{ site.provisional_notice }}</p>{% endif %}
   <h1>{{ page.heading }}</h1>
   <p>{{ page.intro }}</p>
+
+  <h2>{{ page.scope_heading }}</h2>
+  <ul class="public-scope-list">
+    {% for item in page.scope_items %}<li>{{ item }}</li>{% endfor %}
+  </ul>
+
   <p class="public-ai-guide-notice">{{ page.scope_notice }}</p>
+
+  <p class="public-ai-guide-status"><strong>{{ page.status_label }}</strong> — {{ page.placeholder_message }}</p>
 </section>
 {% endblock %}

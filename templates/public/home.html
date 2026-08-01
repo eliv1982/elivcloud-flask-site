@@ -3,8 +3,43 @@
 {% block meta_description %}{{ page.meta_description }}{% endblock %}
 {% block content %}
 <section class="public-section">
-  <p class="public-provisional-notice">{{ site.provisional_notice }}</p>
+  {% if site.provisional %}<p class="public-provisional-notice">{{ site.provisional_notice }}</p>{% endif %}
+  <p class="public-eyebrow">{{ page.eyebrow }}</p>
   <h1>{{ page.heading }}</h1>
   <p>{{ page.intro }}</p>
+  <p>{{ page.supporting_text }}</p>
+
+  <p class="public-cta-group">
+    <a class="public-btn" href="{{ url_for('public.projects', lang=lang) }}">{{ page.cta_primary }}</a>
+    <a class="public-btn" href="{{ url_for('public.about', lang=lang) }}">{{ page.cta_secondary }}</a>
+  </p>
+
+  <ul class="public-pillars">
+    {% for direction in page.directions %}
+    <li class="public-pillar">
+      <h2>{{ direction.title }}</h2>
+      <p>{{ direction.text }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="public-section">
+  <h2>{{ page.featured_heading }}</h2>
+  <p>{{ page.featured_intro }}</p>
+
+  <ul class="public-project-grid">
+    {% for project in featured_projects %}
+    <li class="public-project-card">
+      <h3><a href="{{ url_for('public.project_detail', lang=lang, slug=project.slug) }}">{{ project.title }}</a></h3>
+      <p>{{ project.summary }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="public-section">
+  <h2>{{ page.closing_heading }}</h2>
+  <p>{{ page.closing_text }}</p>
 </section>
 {% endblock %}

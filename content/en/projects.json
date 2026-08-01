@@ -1,55 +1,91 @@
 {
   "language": "en",
-  "provisional": true,
-  "provisional_notice": "Placeholder project summaries based only on already-public repository descriptions. Final selection and wording are pending Elena's review.",
+  "provisional": false,
+  "provisional_notice": "",
   "projects": [
     {
-      "id": "customer-review-mcp",
-      "slug": "customer-review-mcp",
-      "title": "Customer Review MCP Assistant",
-      "summary": "A Telegram-based assistant for monitoring customer reviews, built with an MCP-style FastAPI tool server and SQLite storage. Placeholder summary.",
-      "tags": ["MCP", "FastAPI", "Telegram", "SQLite"],
-      "repo_url": "https://github.com/eliv1982/customer-review-mcp-assistant"
+      "id": "vibe-order-infra",
+      "slug": "vibe-order-infra",
+      "title": "AUREL Intake and Analytics Platform",
+      "summary": "A platform for service intake and request prioritisation, with secure administration and behavioural analytics.",
+      "details": "The project combines a public intake flow, service and request management, secure authentication, explainable prioritisation and analytics. It was taken through to a working production-style environment with automated tests, Docker deployment and HTTPS.",
+      "focus": "How to bring intake, security, transparent prioritisation, analytics and infrastructure together in one working system.",
+      "technologies": ["FastAPI", "PostgreSQL", "TypeScript", "Vite", "Docker", "Traefik", "GitHub Actions"],
+      "repo_url": "https://github.com/eliv1982/vibe-order-infra"
     },
     {
-      "id": "legal-rag-assistant",
-      "slug": "legal-rag-assistant",
-      "title": "Legal RAG Assistant",
-      "summary": "A retrieval-augmented assistant for searching legal materials on independent guarantees, returning source-aware answers. Placeholder summary.",
-      "tags": ["RAG", "FastAPI", "ChromaDB"],
-      "repo_url": "https://github.com/eliv1982/rag-assistant-independent-guarantees"
+      "id": "business-intake-triage-assistant",
+      "slug": "business-intake-triage-assistant",
+      "title": "Business Intake and Triage Assistant",
+      "summary": "A system that turns an unstructured business request into a clear processing route.",
+      "details": "The service validates the request, identifies key facts and missing information, recommends a route and next actions, prepares a response for the requester and stores the reasoning for audit.",
+      "focus": "How to preserve context and decision transparency when an LLM participates in request processing.",
+      "technologies": ["FastAPI", "Pydantic", "SQLAlchemy", "SQLite", "OpenAI Structured Outputs", "TypeScript"],
+      "repo_url": "https://github.com/eliv1982/business-intake-triage-assistant"
     },
     {
-      "id": "ai-agent-toolbox",
-      "slug": "ai-agent-toolbox",
-      "title": "AI Agent Toolbox",
-      "summary": "A local AI agent with a set of callable tools (search, weather, currency, files, memory, reminders) exposed through a CLI and Streamlit interface. Placeholder summary.",
-      "tags": ["LangChain", "Streamlit", "Tool calling"],
-      "repo_url": "https://github.com/eliv1982/ai-agent-toolbox-homework"
+      "id": "mini-crm-google-reports",
+      "slug": "mini-crm-google-reports",
+      "title": "Mini CRM with Google Reports",
+      "summary": "A compact CRM connecting an API, desktop interface and automated Google Sheets reporting.",
+      "details": "Customers, deals and tasks are managed in one workflow; test data can be generated for validation, while reports and analytics are produced through Google APIs.",
+      "focus": "How to connect a local application, backend and external services in one end-to-end workflow.",
+      "technologies": ["FastAPI", "SQLite", "Tkinter", "Google Drive API", "Google Sheets API", "Docker"],
+      "repo_url": "https://github.com/eliv1982/mini-crm-google-reports"
     },
     {
-      "id": "weather-teller",
-      "slug": "weather-teller",
-      "title": "Weather Teller",
-      "summary": "A Telegram bot providing weather forecasts with saved locations, subscriptions, and short AI-generated explanations. Placeholder summary.",
-      "tags": ["Telegram", "OpenWeather API", "PostgreSQL"],
-      "repo_url": "https://github.com/eliv1982/weather_teller_bot"
+      "id": "google-sheets-report-automation",
+      "slug": "google-sheets-report-automation",
+      "title": "Google Sheets Report Automation",
+      "summary": "A system for automatically preparing management reports in Google Sheets.",
+      "details": "A reusable client manages spreadsheet operations and formatting, while a desktop interface lets the user select the period, business area and currency.",
+      "focus": "How to turn a Google Sheets integration into a reusable user-facing tool rather than a one-off script.",
+      "technologies": ["Python", "Google Sheets API", "Tkinter", "OAuth", "Automated testing"],
+      "repo_url": "https://github.com/eliv1982/google-sheets-report-automation"
+    },
+    {
+      "id": "ai-docs-rag-agent",
+      "slug": "ai-docs-rag-agent",
+      "title": "AI Documentation RAG Agent",
+      "summary": "A system that ingests selected documentation and makes it possible to ask questions about its contents.",
+      "details": "Documents are indexed in a vector database, after which a Telegram interface retrieves relevant passages and generates an answer grounded in the connected sources.",
+      "focus": "How to ground answers in a defined knowledge corpus and make documentation search convenient in conversation.",
+      "technologies": ["Python", "RAG", "Pinecone", "Telegram", "LLM API"],
+      "repo_url": "https://github.com/eliv1982/ai-docs-rag-agent"
+    },
+    {
+      "id": "telegram-vector-memory-bot",
+      "slug": "telegram-vector-memory-bot",
+      "title": "Telegram Bot with Vector Memory",
+      "summary": "A Telegram assistant with per-user semantic memory and clear user control.",
+      "details": "The system maintains separate memory for each user, retrieves relevant context, detects semantic duplicates and lets users review or delete stored information.",
+      "focus": "How to make long-term memory useful without taking control of the data away from the user.",
+      "technologies": ["Python", "aiogram 3", "Pinecone", "Embeddings", "Telegram Bot API"],
+      "repo_url": "https://github.com/eliv1982/telegram-vector-memory-bot"
+    }
+  ],
+  "experiments": [
+    {
+      "id": "rise-and-shine",
+      "title": "Rise and Shine",
+      "summary": "A personal experiment with multimodal scenarios and the ways different kinds of input can participate in one user experience.",
+      "focus": "Exploring multimodality, context and interaction between a user and an AI system.",
+      "topics": ["Multimodality", "Context", "AI prototyping"]
     },
     {
       "id": "moodmuse",
-      "slug": "moodmuse",
       "title": "MoodMuse",
-      "summary": "A Telegram bot for generating personalized greeting cards, combining text and image generation with a guided profile flow. Placeholder summary.",
-      "tags": ["Telegram", "Image generation", "AI text generation"],
-      "repo_url": "https://github.com/eliv1982/moodmuse-bot"
+      "summary": "An experimental project exploring multimodality, mood and generative interaction.",
+      "focus": "Exploring how different signals and formats can create a more expressive and context-aware AI experience.",
+      "topics": ["Multimodality", "Generative scenarios", "Experimental interface"]
     },
     {
-      "id": "open-model-tone-finetuning",
-      "slug": "open-model-tone-finetuning",
-      "title": "Open Model Tone Fine-tuning",
-      "summary": "A LoRA fine-tuning experiment adapting an open Russian-language model to a calm, consistent tone of voice for business communication. Placeholder summary.",
-      "tags": ["LoRA", "Hugging Face", "PEFT", "PyTorch"],
-      "repo_url": "https://github.com/eliv1982/open-model-tone-finetuning"
+      "id": "weather-teller",
+      "title": "Weather Teller",
+      "summary": "A small experiment with third-party APIs and turning external data into a clear user-facing response.",
+      "focus": "External-service integration, API response handling and tool orchestration.",
+      "topics": ["Third-party APIs", "Tool integration", "External data processing"],
+      "repo_url": "https://github.com/eliv1982/weather_teller_bot"
     }
   ]
 }

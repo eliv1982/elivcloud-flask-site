@@ -24,8 +24,8 @@ from elivcloud.content import get_project  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-EN_PROJECT_SLUG = get_project("en", "customer-review-mcp")["slug"]
-RU_PROJECT_SLUG = get_project("ru", "customer-review-mcp")["slug"]
+EN_PROJECT_SLUG = get_project("en", "vibe-order-infra")["slug"]
+RU_PROJECT_SLUG = get_project("ru", "vibe-order-infra")["slug"]
 
 
 class ElivCloudRouteTests(unittest.TestCase):

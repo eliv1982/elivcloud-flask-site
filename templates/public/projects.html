@@ -3,15 +3,41 @@
 {% block meta_description %}{{ page.meta_description }}{% endblock %}
 {% block content %}
 <section class="public-section">
-  <p class="public-provisional-notice">{{ site.provisional_notice }}</p>
+  {% if site.provisional %}<p class="public-provisional-notice">{{ site.provisional_notice }}</p>{% endif %}
   <h1>{{ page.heading }}</h1>
   <p>{{ page.intro }}</p>
+</section>
+
+<section class="public-section">
+  <h2>{{ page.selected_heading }}</h2>
+  <p>{{ page.selected_intro }}</p>
 
   <ul class="public-project-grid">
     {% for project in projects %}
     <li class="public-project-card">
-      <h2><a href="{{ url_for('public.project_detail', lang=lang, slug=project.slug) }}">{{ project.title }}</a></h2>
+      <h3><a href="{{ url_for('public.project_detail', lang=lang, slug=project.slug) }}">{{ project.title }}</a></h3>
       <p>{{ project.summary }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="public-section">
+  <h2>{{ page.experiments_heading }}</h2>
+  <p>{{ page.experiments_intro }}</p>
+
+  <ul class="public-experiment-grid">
+    {% for experiment in experiments %}
+    <li class="public-experiment-card">
+      <h3>{{ experiment.title }}</h3>
+      <p>{{ experiment.summary }}</p>
+      <p>{{ experiment.focus }}</p>
+      <ul class="public-tag-list">
+        {% for topic in experiment.topics %}<li>{{ topic }}</li>{% endfor %}
+      </ul>
+      {% if experiment.repo_url %}
+      <p><a href="{{ experiment.repo_url }}" target="_blank" rel="noopener noreferrer">{{ site.pages.projects.labels.view_repository }}</a></p>
+      {% endif %}
     </li>
     {% endfor %}
   </ul>

@@ -3,9 +3,10 @@
 {% block meta_description %}{{ page.meta_description }}{% endblock %}
 {% block content %}
 <section class="public-section">
-  <p class="public-provisional-notice">{{ site.provisional_notice }}</p>
+  {% if site.provisional %}<p class="public-provisional-notice">{{ site.provisional_notice }}</p>{% endif %}
   <h1>{{ page.heading }}</h1>
   <p>{{ page.intro }}</p>
+  <p class="public-contact-note">{{ page.supporting_note }}</p>
 
   <form method="post" novalidate class="public-form">
     {{ form.hidden_tag() }}

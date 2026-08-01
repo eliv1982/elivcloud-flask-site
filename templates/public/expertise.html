@@ -3,7 +3,7 @@
 {% block meta_description %}{{ page.meta_description }}{% endblock %}
 {% block content %}
 <section class="public-section">
-  <p class="public-provisional-notice">{{ site.provisional_notice }}</p>
+  {% if site.provisional %}<p class="public-provisional-notice">{{ site.provisional_notice }}</p>{% endif %}
   <h1>{{ page.heading }}</h1>
   <p>{{ page.intro }}</p>
 
@@ -12,8 +12,14 @@
     <li class="public-pillar">
       <h2>{{ pillar.title }}</h2>
       <p>{{ pillar.description }}</p>
+      <ul class="public-capability-list">
+        {% for capability in pillar.capabilities %}<li>{{ capability }}</li>{% endfor %}
+      </ul>
     </li>
     {% endfor %}
   </ul>
+
+  <h2>{{ page.closing_heading }}</h2>
+  <p>{{ page.closing_text }}</p>
 </section>
 {% endblock %}

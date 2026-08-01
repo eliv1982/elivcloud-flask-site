@@ -1,55 +1,91 @@
 {
   "language": "ru",
-  "provisional": true,
-  "provisional_notice": "Черновые описания проектов основаны только на уже публичных описаниях репозиториев. Итоговый отбор и формулировки ожидают согласования с Еленой.",
+  "provisional": false,
+  "provisional_notice": "",
   "projects": [
     {
-      "id": "customer-review-mcp",
-      "slug": "customer-review-mcp",
-      "title": "Customer Review MCP Assistant",
-      "summary": "Telegram-ассистент для мониторинга отзывов клиентов на основе MCP-style FastAPI tool-сервера и хранилища SQLite. Черновое описание.",
-      "tags": ["MCP", "FastAPI", "Telegram", "SQLite"],
-      "repo_url": "https://github.com/eliv1982/customer-review-mcp-assistant"
+      "id": "vibe-order-infra",
+      "slug": "vibe-order-infra",
+      "title": "AUREL: платформа заявок и аналитики",
+      "summary": "Платформа для приема и приоритизации заявок с защищенной административной частью и аналитикой поведения пользователей.",
+      "details": "Проект объединяет публичную форму, управление услугами и заявками, безопасную авторизацию, объяснимую систему приоритетов и аналитику. Решение доведено до рабочего production-контура с автоматическими тестами, Docker-развертыванием и HTTPS.",
+      "focus": "Как объединить прием заявок, безопасность, прозрачную приоритизацию, аналитику и инфраструктуру в одном работающем контуре.",
+      "technologies": ["FastAPI", "PostgreSQL", "TypeScript", "Vite", "Docker", "Traefik", "GitHub Actions"],
+      "repo_url": "https://github.com/eliv1982/vibe-order-infra"
     },
     {
-      "id": "legal-rag-assistant",
-      "slug": "legal-rag-assistant",
-      "title": "Legal RAG Assistant",
-      "summary": "RAG-ассистент для поиска по юридическим материалам о независимых гарантиях с ответами, опирающимися на источники. Черновое описание.",
-      "tags": ["RAG", "FastAPI", "ChromaDB"],
-      "repo_url": "https://github.com/eliv1982/rag-assistant-independent-guarantees"
+      "id": "business-intake-triage-assistant",
+      "slug": "business-intake-triage-assistant",
+      "title": "Business Intake & Triage Assistant",
+      "summary": "Система, которая превращает неструктурированный бизнес-запрос в понятный маршрут обработки.",
+      "details": "Сервис проверяет входные данные, выделяет ключевые факты, определяет, какой информации не хватает, предлагает маршрут и следующие действия, готовит ответ заявителю и сохраняет основания решения для аудита.",
+      "focus": "Как сохранить контекст и прозрачность решения, когда в обработке запроса участвует LLM.",
+      "technologies": ["FastAPI", "Pydantic", "SQLAlchemy", "SQLite", "OpenAI Structured Outputs", "TypeScript"],
+      "repo_url": "https://github.com/eliv1982/business-intake-triage-assistant"
     },
     {
-      "id": "ai-agent-toolbox",
-      "slug": "ai-agent-toolbox",
-      "title": "AI Agent Toolbox",
-      "summary": "Локальный AI-агент с набором инструментов (поиск, погода, валюты, файлы, память, напоминания), доступный через CLI и Streamlit. Черновое описание.",
-      "tags": ["LangChain", "Streamlit", "Tool calling"],
-      "repo_url": "https://github.com/eliv1982/ai-agent-toolbox-homework"
+      "id": "mini-crm-google-reports",
+      "slug": "mini-crm-google-reports",
+      "title": "Mini CRM с отчетами Google",
+      "summary": "Небольшая CRM, соединяющая API, desktop-интерфейс и автоматическую отчетность в Google Sheets.",
+      "details": "Клиенты, сделки и задачи ведутся в едином процессе; тестовые данные можно генерировать для проверки, а отчеты и аналитика создаются через Google API.",
+      "focus": "Как связать локальное приложение, backend и внешние сервисы в одном end-to-end-процессе.",
+      "technologies": ["FastAPI", "SQLite", "Tkinter", "Google Drive API", "Google Sheets API", "Docker"],
+      "repo_url": "https://github.com/eliv1982/mini-crm-google-reports"
     },
     {
-      "id": "weather-teller",
-      "slug": "weather-teller",
-      "title": "Weather Teller",
-      "summary": "Telegram-бот с прогнозом погоды, сохранёнными локациями, подписками и короткими AI-пояснениями. Черновое описание.",
-      "tags": ["Telegram", "OpenWeather API", "PostgreSQL"],
-      "repo_url": "https://github.com/eliv1982/weather_teller_bot"
+      "id": "google-sheets-report-automation",
+      "slug": "google-sheets-report-automation",
+      "title": "Автоматизация отчетов в Google Sheets",
+      "summary": "Система автоматической подготовки управленческих отчетов в Google Sheets.",
+      "details": "Переиспользуемый клиент выполняет операции с таблицами, форматирует отчеты и позволяет выбирать период, направление и валюту через desktop-интерфейс.",
+      "focus": "Как превратить интеграцию с Google Sheets в повторно используемый пользовательский инструмент, а не одноразовый скрипт.",
+      "technologies": ["Python", "Google Sheets API", "Tkinter", "OAuth", "Автоматическое тестирование"],
+      "repo_url": "https://github.com/eliv1982/google-sheets-report-automation"
+    },
+    {
+      "id": "ai-docs-rag-agent",
+      "slug": "ai-docs-rag-agent",
+      "title": "RAG-агент по документации",
+      "summary": "Система, которая загружает выбранную документацию и позволяет задавать вопросы по ее содержанию.",
+      "details": "Документы индексируются в векторной базе, после чего Telegram-интерфейс находит релевантные фрагменты и формирует ответ, опираясь на подключенные источники.",
+      "focus": "Как ограничить ответы конкретным корпусом знаний и сделать поиск по документации удобным в диалоге.",
+      "technologies": ["Python", "RAG", "Pinecone", "Telegram", "LLM API"],
+      "repo_url": "https://github.com/eliv1982/ai-docs-rag-agent"
+    },
+    {
+      "id": "telegram-vector-memory-bot",
+      "slug": "telegram-vector-memory-bot",
+      "title": "Telegram-бот с векторной памятью",
+      "summary": "Telegram-ассистент с персональной семантической памятью и понятным пользовательским контролем.",
+      "details": "Система хранит отдельную память для каждого пользователя, извлекает релевантный контекст, обнаруживает смысловые дубликаты и позволяет просматривать или удалять сохраненные данные.",
+      "focus": "Как сделать долговременную память полезной, не отнимая у пользователя контроль над его данными.",
+      "technologies": ["Python", "aiogram 3", "Pinecone", "Embeddings", "Telegram Bot API"],
+      "repo_url": "https://github.com/eliv1982/telegram-vector-memory-bot"
+    }
+  ],
+  "experiments": [
+    {
+      "id": "rise-and-shine",
+      "title": "Rise and Shine",
+      "summary": "Личный эксперимент с мультимодальными сценариями и тем, как разные типы входных данных могут участвовать в одном пользовательском опыте.",
+      "focus": "Исследование мультимодальности, контекста и взаимодействия между пользователем и AI-системой.",
+      "topics": ["Мультимодальность", "Контекст", "AI-прототипирование"]
     },
     {
       "id": "moodmuse",
-      "slug": "moodmuse",
       "title": "MoodMuse",
-      "summary": "Telegram-бот для создания персонализированных открыток с генерацией текста и изображения по анкете пользователя. Черновое описание.",
-      "tags": ["Telegram", "Image generation", "AI text generation"],
-      "repo_url": "https://github.com/eliv1982/moodmuse-bot"
+      "summary": "Экспериментальный проект о мультимодальности, настроении и генеративном взаимодействии.",
+      "focus": "Исследование того, как разные сигналы и форматы могут создавать более выразительный и контекстный AI-сценарий.",
+      "topics": ["Мультимодальность", "Генеративные сценарии", "Экспериментальный интерфейс"]
     },
     {
-      "id": "open-model-tone-finetuning",
-      "slug": "open-model-tone-finetuning",
-      "title": "Open Model Tone Fine-tuning",
-      "summary": "Эксперимент по LoRA-дообучению открытой русскоязычной модели под спокойный, единообразный tone of voice для деловой коммуникации. Черновое описание.",
-      "tags": ["LoRA", "Hugging Face", "PEFT", "PyTorch"],
-      "repo_url": "https://github.com/eliv1982/open-model-tone-finetuning"
+      "id": "weather-teller",
+      "title": "Weather Teller",
+      "summary": "Небольшой эксперимент с подключением сторонних API и объединением внешних данных в понятный пользовательский ответ.",
+      "focus": "Интеграция внешних сервисов, обработка ответов API и оркестрация инструментов.",
+      "topics": ["Сторонние API", "Интеграция инструментов", "Обработка внешних данных"],
+      "repo_url": "https://github.com/eliv1982/weather_teller_bot"
     }
   ]
 }
