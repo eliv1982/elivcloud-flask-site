@@ -1,0 +1,55 @@
+{
+  "language": "en",
+  "provisional": true,
+  "provisional_notice": "Placeholder project summaries based only on already-public repository descriptions. Final selection and wording are pending Elena's review.",
+  "projects": [
+    {
+      "id": "customer-review-mcp",
+      "slug": "customer-review-mcp",
+      "title": "Customer Review MCP Assistant",
+      "summary": "A Telegram-based assistant for monitoring customer reviews, built with an MCP-style FastAPI tool server and SQLite storage. Placeholder summary.",
+      "tags": ["MCP", "FastAPI", "Telegram", "SQLite"],
+      "repo_url": "https://github.com/eliv1982/customer-review-mcp-assistant"
+    },
+    {
+      "id": "legal-rag-assistant",
+      "slug": "legal-rag-assistant",
+      "title": "Legal RAG Assistant",
+      "summary": "A retrieval-augmented assistant for searching legal materials on independent guarantees, returning source-aware answers. Placeholder summary.",
+      "tags": ["RAG", "FastAPI", "ChromaDB"],
+      "repo_url": "https://github.com/eliv1982/rag-assistant-independent-guarantees"
+    },
+    {
+      "id": "ai-agent-toolbox",
+      "slug": "ai-agent-toolbox",
+      "title": "AI Agent Toolbox",
+      "summary": "A local AI agent with a set of callable tools (search, weather, currency, files, memory, reminders) exposed through a CLI and Streamlit interface. Placeholder summary.",
+      "tags": ["LangChain", "Streamlit", "Tool calling"],
+      "repo_url": "https://github.com/eliv1982/ai-agent-toolbox-homework"
+    },
+    {
+      "id": "weather-teller",
+      "slug": "weather-teller",
+      "title": "Weather Teller",
+      "summary": "A Telegram bot providing weather forecasts with saved locations, subscriptions, and short AI-generated explanations. Placeholder summary.",
+      "tags": ["Telegram", "OpenWeather API", "PostgreSQL"],
+      "repo_url": "https://github.com/eliv1982/weather_teller_bot"
+    },
+    {
+      "id": "moodmuse",
+      "slug": "moodmuse",
+      "title": "MoodMuse",
+      "summary": "A Telegram bot for generating personalized greeting cards, combining text and image generation with a guided profile flow. Placeholder summary.",
+      "tags": ["Telegram", "Image generation", "AI text generation"],
+      "repo_url": "https://github.com/eliv1982/moodmuse-bot"
+    },
+    {
+      "id": "open-model-tone-finetuning",
+      "slug": "open-model-tone-finetuning",
+      "title": "Open Model Tone Fine-tuning",
+      "summary": "A LoRA fine-tuning experiment adapting an open Russian-language model to a calm, consistent tone of voice for business communication. Placeholder summary.",
+      "tags": ["LoRA", "Hugging Face", "PEFT", "PyTorch"],
+      "repo_url": "https://github.com/eliv1982/open-model-tone-finetuning"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{% extends "public/base.html" %}
+{% block meta_title %}{{ heading }} — ElivCloud{% endblock %}
+{% block meta_description %}{{ message }}{% endblock %}
+{% block content %}
+<section class="public-section">
+  <h1>{{ heading }}</h1>
+  <p class="public-alert public-alert--error" role="alert">{{ message }}</p>
+</section>
+{% endblock %}

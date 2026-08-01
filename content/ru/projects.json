@@ -1,0 +1,55 @@
+{
+  "language": "ru",
+  "provisional": true,
+  "provisional_notice": "Черновые описания проектов основаны только на уже публичных описаниях репозиториев. Итоговый отбор и формулировки ожидают согласования с Еленой.",
+  "projects": [
+    {
+      "id": "customer-review-mcp",
+      "slug": "customer-review-mcp",
+      "title": "Customer Review MCP Assistant",
+      "summary": "Telegram-ассистент для мониторинга отзывов клиентов на основе MCP-style FastAPI tool-сервера и хранилища SQLite. Черновое описание.",
+      "tags": ["MCP", "FastAPI", "Telegram", "SQLite"],
+      "repo_url": "https://github.com/eliv1982/customer-review-mcp-assistant"
+    },
+    {
+      "id": "legal-rag-assistant",
+      "slug": "legal-rag-assistant",
+      "title": "Legal RAG Assistant",
+      "summary": "RAG-ассистент для поиска по юридическим материалам о независимых гарантиях с ответами, опирающимися на источники. Черновое описание.",
+      "tags": ["RAG", "FastAPI", "ChromaDB"],
+      "repo_url": "https://github.com/eliv1982/rag-assistant-independent-guarantees"
+    },
+    {
+      "id": "ai-agent-toolbox",
+      "slug": "ai-agent-toolbox",
+      "title": "AI Agent Toolbox",
+      "summary": "Локальный AI-агент с набором инструментов (поиск, погода, валюты, файлы, память, напоминания), доступный через CLI и Streamlit. Черновое описание.",
+      "tags": ["LangChain", "Streamlit", "Tool calling"],
+      "repo_url": "https://github.com/eliv1982/ai-agent-toolbox-homework"
+    },
+    {
+      "id": "weather-teller",
+      "slug": "weather-teller",
+      "title": "Weather Teller",
+      "summary": "Telegram-бот с прогнозом погоды, сохранёнными локациями, подписками и короткими AI-пояснениями. Черновое описание.",
+      "tags": ["Telegram", "OpenWeather API", "PostgreSQL"],
+      "repo_url": "https://github.com/eliv1982/weather_teller_bot"
+    },
+    {
+      "id": "moodmuse",
+      "slug": "moodmuse",
+      "title": "MoodMuse",
+      "summary": "Telegram-бот для создания персонализированных открыток с генерацией текста и изображения по анкете пользователя. Черновое описание.",
+      "tags": ["Telegram", "Image generation", "AI text generation"],
+      "repo_url": "https://github.com/eliv1982/moodmuse-bot"
+    },
+    {
+      "id": "open-model-tone-finetuning",
+      "slug": "open-model-tone-finetuning",
+      "title": "Open Model Tone Fine-tuning",
+      "summary": "Эксперимент по LoRA-дообучению открытой русскоязычной модели под спокойный, единообразный tone of voice для деловой коммуникации. Черновое описание.",
+      "tags": ["LoRA", "Hugging Face", "PEFT", "PyTorch"],
+      "repo_url": "https://github.com/eliv1982/open-model-tone-finetuning"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{% extends "public/base.html" %}
+{% block meta_title %}{{ page.meta_title }}{% endblock %}
+{% block meta_description %}{{ page.meta_description }}{% endblock %}
+{% block content %}
+<section class="public-section">
+  <p class="public-provisional-notice">{{ site.provisional_notice }}</p>
+  <h1>{{ page.heading }}</h1>
+  <p>{{ page.intro }}</p>
+</section>
+{% endblock %}

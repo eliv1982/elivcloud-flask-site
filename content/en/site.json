@@ -1,0 +1,98 @@
+{
+  "language": "en",
+  "provisional": true,
+  "provisional_notice": "Placeholder content for the site foundation slice. Final wording is pending Elena's review.",
+  "site_name": "ElivCloud",
+  "meta": {
+    "default_title": "ElivCloud",
+    "default_description": "Personal website of Elena Shlenskova. Content placeholder pending final review."
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "expertise": "Expertise",
+    "projects": "Projects",
+    "experience": "Experience",
+    "contact": "Contact",
+    "ai_guide": "AI Guide"
+  },
+  "pages": {
+    "home": {
+      "meta_title": "ElivCloud — Home",
+      "meta_description": "Placeholder homepage. Final introduction pending review.",
+      "heading": "Elena Shlenskova",
+      "intro": "This is a placeholder homepage for the site foundation slice. The final introduction text is pending Elena's review and is not yet written."
+    },
+    "about": {
+      "meta_title": "ElivCloud — About",
+      "meta_description": "Placeholder About page. Final biography pending review.",
+      "heading": "About",
+      "intro": "This is a placeholder About page. The final biography content is pending Elena's review and is not yet written."
+    },
+    "expertise": {
+      "meta_title": "ElivCloud — Expertise",
+      "meta_description": "Placeholder Expertise page outlining three provisional focus areas.",
+      "heading": "Expertise",
+      "intro": "This is a placeholder Expertise page. The three areas below are structural placeholders, not final descriptions.",
+      "pillars": [
+        {
+          "title": "Law, corporate and project finance, and international transactions",
+          "description": "Placeholder description. Pending final content."
+        },
+        {
+          "title": "Applied AI and automation",
+          "description": "Placeholder description. Pending final content."
+        },
+        {
+          "title": "Solutions at the intersection of law, finance, knowledge management, and business processes",
+          "description": "Placeholder description. Pending final content."
+        }
+      ]
+    },
+    "projects": {
+      "meta_title": "ElivCloud — Projects",
+      "meta_description": "Placeholder Projects overview page.",
+      "heading": "Projects",
+      "intro": "This is a placeholder Projects overview. The summaries below are provisional and based only on already-public repository descriptions; final selection is pending Elena's review."
+    },
+    "experience": {
+      "meta_title": "ElivCloud — Experience",
+      "meta_description": "Placeholder Experience page.",
+      "heading": "Experience",
+      "intro": "This is a placeholder Experience page. The final content is pending Elena's review and is not yet written."
+    },
+    "contact": {
+      "meta_title": "ElivCloud — Contact",
+      "meta_description": "Placeholder Contact page.",
+      "heading": "Contact",
+      "intro": "Use the form below to get in touch. This page is a placeholder shell for the site foundation slice.",
+      "form": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone (optional)",
+        "subject": "Subject",
+        "message": "Message",
+        "submit": "Send",
+        "success": "Thank you! Your message has been sent.",
+        "csrf_error_heading": "Request could not be verified",
+        "csrf_error": "Your session or form token has expired. Please reload the page and try again.",
+        "validation": {
+          "required": "This field is required.",
+          "invalid_email": "Enter a valid email address.",
+          "name_length": "Name must be at most 120 characters.",
+          "email_length": "Email must be at most 255 characters.",
+          "phone_length": "Phone must be at most 32 characters.",
+          "subject_length": "Subject must be at most 180 characters.",
+          "message_length": "Message must be at most 5000 characters."
+        }
+      }
+    },
+    "ai_guide": {
+      "meta_title": "ElivCloud — AI Guide",
+      "meta_description": "Placeholder AI Guide page.",
+      "heading": "AI Guide",
+      "intro": "This is a placeholder shell for the AI Guide. The assistant is intended to help you navigate this website — its content, expertise areas, and projects.",
+      "scope_notice": "The AI Guide does not provide legal advice and does not create an attorney-client relationship. It is limited to helping you find and understand information already published on this site."
+    }
+  }
+}
