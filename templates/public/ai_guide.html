@@ -2,15 +2,20 @@
 {% block meta_title %}{{ page.meta_title }}{% endblock %}
 {% block meta_description %}{{ page.meta_description }}{% endblock %}
 {% block content %}
-<section class="public-section">
+<section class="public-section public-page-section">
   {% if site.provisional %}<p class="public-provisional-notice">{{ site.provisional_notice }}</p>{% endif %}
   <h1>{{ page.heading }}</h1>
   <p>{{ page.intro }}</p>
 
   <h2>{{ page.scope_heading }}</h2>
-  <ul class="public-scope-list">
-    {% for item in page.scope_items %}<li>{{ item }}</li>{% endfor %}
-  </ul>
+  <ol class="public-guide-capabilities">
+    {% for item in page.scope_items %}
+    <li>
+      <span class="public-guide-number" aria-hidden="true">{{ "%02d"|format(loop.index) }}</span>
+      <span class="public-guide-text">{{ item }}</span>
+    </li>
+    {% endfor %}
+  </ol>
 
   <p class="public-ai-guide-notice">{{ page.scope_notice }}</p>
 

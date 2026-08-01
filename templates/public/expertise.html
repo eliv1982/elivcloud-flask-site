@@ -2,15 +2,15 @@
 {% block meta_title %}{{ page.meta_title }}{% endblock %}
 {% block meta_description %}{{ page.meta_description }}{% endblock %}
 {% block content %}
-<section class="public-section">
+<section class="public-section public-page-section">
   {% if site.provisional %}<p class="public-provisional-notice">{{ site.provisional_notice }}</p>{% endif %}
   <h1>{{ page.heading }}</h1>
   <p>{{ page.intro }}</p>
 
-  <ul class="public-pillars">
+  <ul class="public-expertise-grid">
     {% for pillar in page.pillars %}
-    <li class="public-pillar">
-      <h2>{{ pillar.title }}</h2>
+    <li class="public-expertise-card">
+      <h3>{{ pillar.title }}</h3>
       <p>{{ pillar.description }}</p>
       <ul class="public-capability-list">
         {% for capability in pillar.capabilities %}<li>{{ capability }}</li>{% endfor %}
@@ -19,7 +19,11 @@
     {% endfor %}
   </ul>
 
-  <h2>{{ page.closing_heading }}</h2>
-  <p>{{ page.closing_text }}</p>
+  <div class="public-expertise-principle">
+    <div class="public-expertise-principle-grid">
+      <h2>{{ page.closing_heading }}</h2>
+      <p>{{ page.closing_text }}</p>
+    </div>
+  </div>
 </section>
 {% endblock %}

@@ -2,12 +2,12 @@
 {% block meta_title %}{{ page.meta_title }}{% endblock %}
 {% block meta_description %}{{ page.meta_description }}{% endblock %}
 {% block content %}
-<section class="public-section">
+<section class="public-section public-page-section">
   {% if site.provisional %}<p class="public-provisional-notice">{{ site.provisional_notice }}</p>{% endif %}
   <h1>{{ page.heading }}</h1>
   <p>{{ page.intro }}</p>
 
-  <ul class="public-pillars">
+  <ul class="public-experience-grid">
     {% for stage in page.stages %}
     <li class="public-pillar">
       <h2>{{ stage.title }}</h2>

@@ -13,7 +13,7 @@
     "expertise": "Areas of work",
     "projects": "Projects",
     "experience": "Experience",
-    "contact": "Contact",
+    "contact": "Message",
     "ai_guide": "AI Guide"
   },
   "pages": {
@@ -166,36 +166,36 @@
       "stages": [
         {
           "title": "Legal practice and business support",
-          "text": "More than 15 years of work with contracts, transactions, risk and decisions that require precision, accountability and an understanding of the real business context."
+          "text": "More than 15 years of work with contracts, transactions, risk and decisions that require precision, accountability and an understanding of the real business context. The work involves looking beyond the formal requirement to understand how it affects the transaction structure, the participants and the decisions that follow."
         },
         {
           "title": "Corporate and project finance",
-          "text": "Experience with complex financing structures, international elements, multiple participants and documentation that must remain internally coherent."
+          "text": "Experience with complex financing structures, international elements, multiple participants and documentation that must remain internally coherent. This context requires legal, financial and operational dependencies — and the effect of any change on the overall structure — to remain visible at the same time."
         },
         {
           "title": "Conflict, negotiation and the human factor",
-          "text": "Knowledge of social psychology, conflict, negotiation and mediation helps me look beyond formal positions to the interests involved, the dynamics between participants and the reasons decisions move forward or become blocked."
+          "text": "Knowledge of social psychology, conflict, negotiation and mediation helps me look beyond formal positions to the interests involved, the dynamics between participants and the reasons decisions move forward or become blocked. This perspective is especially useful where formal positions alone do not explain resistance, delay or mismatched expectations."
         },
         {
           "title": "Applied AI and automation",
-          "text": "Hands-on development of AI assistants, triage systems, knowledge retrieval, reporting, automation and structured information processing."
+          "text": "Hands-on development of AI assistants, triage systems, knowledge retrieval, reporting, automation and structured information processing. Across these projects, I pay particular attention to context, transparency and keeping people in control of the final decision."
         },
         {
           "title": "Complete digital solutions",
-          "text": "Building working systems rather than isolated prompts, including APIs, databases, interfaces, authentication, tests, security, Docker deployment and audit trails."
+          "text": "Building working systems rather than isolated prompts, including APIs, databases, interfaces, authentication, tests, security, Docker deployment and audit trails. For me, a solution should go beyond a demonstration and hold up when tested against data, tests and a real user workflow."
         },
         {
           "title": "Continuous learning and experimentation",
-          "text": "Learning new tools through personal projects, from production-style services to smaller explorations of multimodality, third-party APIs and generative scenarios."
+          "text": "Learning new tools through personal projects, from production-style services to smaller explorations of multimodality, third-party APIs and generative scenarios. Experiments make it possible to test a hypothesis quickly, understand a tool's limitations and decide whether an idea is worth developing further."
         }
       ]
     },
     "contact": {
-      "meta_title": "Contact — ElivCloud",
+      "meta_title": "Send a message — ElivCloud",
       "meta_description": "Contact Elena Shlenskova about complex systems, negotiation, applied AI, automation and cross-disciplinary projects.",
-      "heading": "Contact",
+      "heading": "Send a message",
       "intro": "For conversations about complex systems, negotiation, applied AI, automation, knowledge management or cross-disciplinary projects, you can use the form below.",
-      "supporting_note": "Please do not include confidential documents, personal data or information that is not intended for public disclosure in the first message.",
+      "supporting_note": "Please do not send confidential documents, personal data or information that is not intended for public disclosure through this form.",
       "form": {
         "name": "Name",
         "email": "Email",

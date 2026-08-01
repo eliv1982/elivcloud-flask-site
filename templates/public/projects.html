@@ -2,13 +2,13 @@
 {% block meta_title %}{{ page.meta_title }}{% endblock %}
 {% block meta_description %}{{ page.meta_description }}{% endblock %}
 {% block content %}
-<section class="public-section">
+<section class="public-section public-page-section" id="public-projects-intro">
   {% if site.provisional %}<p class="public-provisional-notice">{{ site.provisional_notice }}</p>{% endif %}
   <h1>{{ page.heading }}</h1>
   <p>{{ page.intro }}</p>
 </section>
 
-<section class="public-section">
+<section class="public-section public-page-section">
   <h2>{{ page.selected_heading }}</h2>
   <p>{{ page.selected_intro }}</p>
 
@@ -17,12 +17,25 @@
     <li class="public-project-card">
       <h3><a href="{{ url_for('public.project_detail', lang=lang, slug=project.slug) }}">{{ project.title }}</a></h3>
       <p>{{ project.summary }}</p>
+
+      {% if project.technologies %}
+      <ul class="public-tag-list">
+        {% for technology in project.technologies %}<li>{{ technology }}</li>{% endfor %}
+      </ul>
+      {% endif %}
+
+      <div class="public-card-actions">
+        <a class="public-project-link" href="{{ url_for('public.project_detail', lang=lang, slug=project.slug) }}">{{ page.labels.overview }}</a>
+        {% if project.repo_url %}
+        <a class="public-repo-link" href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer">{{ page.labels.view_repository }}</a>
+        {% endif %}
+      </div>
     </li>
     {% endfor %}
   </ul>
 </section>
 
-<section class="public-section">
+<section class="public-section public-page-section">
   <h2>{{ page.experiments_heading }}</h2>
   <p>{{ page.experiments_intro }}</p>
 

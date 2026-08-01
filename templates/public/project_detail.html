@@ -2,25 +2,33 @@
 {% block meta_title %}{{ project.title }} — ElivCloud{% endblock %}
 {% block meta_description %}{{ project.summary }}{% endblock %}
 {% block content %}
-<section class="public-section">
+<section class="public-section public-page-section public-project-detail">
   {% if site.provisional %}<p class="public-provisional-notice">{{ site.provisional_notice }}</p>{% endif %}
   <p><a href="{{ url_for('public.projects', lang=lang) }}">&larr; {{ site.pages.projects.labels.back_to_projects }}</a></p>
   <h1>{{ project.title }}</h1>
 
-  <h2>{{ site.pages.projects.labels.overview }}</h2>
-  <p>{{ project.summary }}</p>
-  <p>{{ project.details }}</p>
+  <div class="public-project-detail-section">
+    <h2>{{ site.pages.projects.labels.overview }}</h2>
+    <p>{{ project.summary }}</p>
+    <p>{{ project.details }}</p>
+  </div>
 
-  <h2>{{ site.pages.projects.labels.focus }}</h2>
-  <p>{{ project.focus }}</p>
+  <div class="public-project-detail-section">
+    <h2>{{ site.pages.projects.labels.focus }}</h2>
+    <p>{{ project.focus }}</p>
+  </div>
 
-  <h2>{{ site.pages.projects.labels.technologies }}</h2>
-  <ul class="public-tag-list">
-    {% for technology in project.technologies %}<li>{{ technology }}</li>{% endfor %}
-  </ul>
+  <div class="public-project-detail-section">
+    <h2>{{ site.pages.projects.labels.technologies }}</h2>
+    <ul class="public-tag-list">
+      {% for technology in project.technologies %}<li>{{ technology }}</li>{% endfor %}
+    </ul>
+  </div>
 
   {% if project.repo_url %}
-  <p><a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer">{{ site.pages.projects.labels.view_repository }}</a></p>
+  <div class="public-card-actions public-project-detail-actions">
+    <a class="public-repo-link" href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer">{{ site.pages.projects.labels.view_repository }}</a>
+  </div>
   {% endif %}
 </section>
 {% endblock %}

@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="{% block meta_description %}{{ site.meta.default_description }}{% endblock %}" />
     <title>{% block meta_title %}{{ site.meta.default_title }}{% endblock %}</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='brand/source/eliv-logo-mark-on-light.png') }}"
+    />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public.css') }}" />
     {% block head %}{% endblock %}
   </head>
@@ -13,7 +18,15 @@
 
     <header class="public-header">
       <div class="public-header-inner">
-        <a class="public-brand" href="{{ url_for('public.home', lang=lang) }}">ElivCloud</a>
+        <a class="public-brand" href="{{ url_for('public.home', lang=lang) }}">
+          <img
+            class="public-brand-logo"
+            src="{{ url_for('static', filename='brand/source/eliv-logo-horizontal-on-light.png') }}"
+            width="150"
+            height="49"
+            alt="ElivCloud"
+          />
+        </a>
 
         <button
           type="button"
@@ -23,7 +36,9 @@
           aria-controls="public-nav"
         >
           <span class="sr-only">{{ 'Menu' if lang == 'en' else 'Меню' }}</span>
-          <span aria-hidden="true">&#9776;</span>
+          <span class="public-nav-toggle-icon" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </span>
         </button>
 
         <nav
@@ -31,7 +46,7 @@
           id="public-nav"
           aria-label="{{ 'Main navigation' if lang == 'en' else 'Основная навигация' }}"
         >
-          <ul>
+          <ul class="public-nav-list">
             <li><a href="{{ url_for('public.home', lang=lang) }}" {% if active_page == 'home' %}aria-current="page"{% endif %}>{{ site.nav.home }}</a></li>
             <li><a href="{{ url_for('public.about', lang=lang) }}" {% if active_page == 'about' %}aria-current="page"{% endif %}>{{ site.nav.about }}</a></li>
             <li><a href="{{ url_for('public.expertise', lang=lang) }}" {% if active_page == 'expertise' %}aria-current="page"{% endif %}>{{ site.nav.expertise }}</a></li>
@@ -64,7 +79,42 @@
     </main>
 
     <footer class="public-footer">
-      <p>&copy; {{ current_year }} ElivCloud</p>
+      <div class="public-footer-inner">
+        <div class="public-footer-brand">
+          <img
+            class="public-footer-logo"
+            src="{{ url_for('static', filename='brand/source/eliv-logo-horizontal-on-dark.png') }}"
+            width="140"
+            height="46"
+            alt="ElivCloud"
+          />
+          <p class="public-footer-tagline">{{ site.pages.home.heading }}</p>
+        </div>
+
+        <nav
+          class="public-footer-nav"
+          aria-label="{{ 'Footer navigation' if lang == 'en' else 'Навигация в подвале' }}"
+        >
+          <ul>
+            <li><a href="{{ url_for('public.home', lang=lang) }}" {% if active_page == 'home' %}aria-current="page"{% endif %}>{{ site.nav.home }}</a></li>
+            <li><a href="{{ url_for('public.about', lang=lang) }}" {% if active_page == 'about' %}aria-current="page"{% endif %}>{{ site.nav.about }}</a></li>
+            <li><a href="{{ url_for('public.expertise', lang=lang) }}" {% if active_page == 'expertise' %}aria-current="page"{% endif %}>{{ site.nav.expertise }}</a></li>
+            <li><a href="{{ url_for('public.projects', lang=lang) }}" {% if active_page == 'projects' %}aria-current="page"{% endif %}>{{ site.nav.projects }}</a></li>
+            <li><a href="{{ url_for('public.experience', lang=lang) }}" {% if active_page == 'experience' %}aria-current="page"{% endif %}>{{ site.nav.experience }}</a></li>
+            <li><a href="{{ url_for('public.contact', lang=lang) }}" {% if active_page == 'contact' %}aria-current="page"{% endif %}>{{ site.nav.contact }}</a></li>
+            <li><a href="{{ url_for('public.ai_guide', lang=lang) }}" {% if active_page == 'ai_guide' %}aria-current="page"{% endif %}>{{ site.nav.ai_guide }}</a></li>
+          </ul>
+        </nav>
+
+        <div class="public-footer-lang" aria-label="{{ 'Language' if lang == 'en' else 'Язык' }}">
+          <a href="{{ localized_url_for('en') }}" {% if lang == 'en' %}aria-current="true"{% endif %}>EN</a>
+          <a href="{{ localized_url_for('ru') }}" {% if lang == 'ru' %}aria-current="true"{% endif %}>RU</a>
+        </div>
+      </div>
+
+      <div class="public-footer-bottom">
+        <p>{% if current_year %}&copy; {{ current_year }} ElivCloud{% else %}&copy; ElivCloud{% endif %}</p>
+      </div>
     </footer>
 
     <script src="{{ url_for('static', filename='js/public_nav.js') }}"></script>

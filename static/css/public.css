@@ -1,8 +1,247 @@
-/* Minimal foundation-slice styles for the new public/* templates only.
-   Intentionally undecorated: no color tokens, gradients, shadows, or
-   animation — that is deferred to the visual redesign phase. Scope is
-   readability + functional nav/language-switching for the seven-item menu,
-   which (unlike the old four-item nav) needs a mobile toggle. */
+/* ==========================================================================
+   ElivCloud public site stylesheet — Visual Stage 1 (corrected pass)
+   ==========================================================================
+   Organization:
+     1.  Tokens and reset
+     2.  Base typography
+     3.  Layout utilities / container
+     4.  Accessibility
+     5.  Header / navigation / language switch
+     6.  Buttons and shared components
+     7.  Home hero
+     8.  Direction cards
+     9.  Featured projects
+     10. Closing section
+     11. Generic inherited page styles (About/Areas of work/Projects/
+         Experience/Contact/AI Guide — those templates are unchanged in
+         this stage and inherit typography, color and spacing from here)
+     12. Footer
+     13. Responsive breakpoints
+     14. Reduced motion
+   No gradients, glassmorphism, decorative animation or external fonts are
+   used anywhere in this file.
+
+   Container model: every full-bleed section wrapper (header/hero/section/
+   footer/flash) shares one rule block in §3 driven by --container-width and
+   --container-padding, so there is exactly one place that controls "how wide
+   is the page" — no per-component max-width duplication or drift.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens and reset
+   -------------------------------------------------------------------------- */
+
+:root {
+  --color-bg: #f6f7f4;
+  --color-bg-alt: #eef1ee;
+  --color-surface: #ffffff;
+  --color-surface-soft: #fafbf9;
+
+  --color-border: #dce2de;
+  --color-border-soft: #e8ece9;
+
+  --color-text: #222a28;
+  --color-text-muted: #59635f;
+  --color-text-faint: #7d8782;
+
+  --color-accent: #355d5a;
+  --color-accent-dark: #274744;
+  --color-accent-soft: #83a5a0;
+  --color-accent-bg: #e7f0ee;
+
+  --color-secondary: #a88f68;
+  --color-secondary-bg: #f3eee5;
+
+  --color-footer: #222c2a;
+  --color-footer-text: #eef2ef;
+  --color-footer-muted: #b9c4bf;
+
+  /* Semantic feedback tones, derived once here rather than scattered as
+     literal colors through the alert/field-error rules below. */
+  --color-success: #2f6b3a;
+  --color-success-bg: #eaf3ec;
+  --color-danger: #a3342a;
+  --color-danger-bg: #fbeceb;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+
+  --shadow-card: 0 12px 36px rgba(34, 42, 40, 0.07);
+  --shadow-header: 0 1px 0 rgba(34, 42, 40, 0.08);
+
+  --container-width: 1160px;
+  /* Single source of truth for the horizontal gutter of every full-bleed
+     section wrapper; redefined at narrower breakpoints in §13 instead of
+     being repeated per-selector. */
+  --container-padding: 2rem;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-width: 320px;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.68;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+/* --------------------------------------------------------------------------
+   2. Base typography
+   -------------------------------------------------------------------------- */
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--color-text);
+  line-height: 1.2;
+  margin: 0 0 0.6em;
+  font-weight: 600;
+}
+
+h1,
+h2 {
+  font-family: var(--font-serif);
+}
+
+/* Baseline h1 scale is tuned for generic internal pages (About, Areas of
+   work, Projects, Experience, Send a message, AI Guide, project detail,
+   error) which all render a plain, unclassed <h1>. The Home hero heading
+   carries its own .public-hero-heading class (see §7) and is restored to
+   a larger size there, so raising or lowering this baseline never touches
+   the hero. */
+h1 {
+  font-size: clamp(2.55rem, 3.7vw, 3.7rem);
+  line-height: 1.07;
+}
+
+h2 {
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.12;
+}
+
+h3 {
+  font-family: var(--font-sans);
+  font-size: clamp(1.18rem, 1.5vw, 1.38rem);
+  line-height: 1.3;
+}
+
+p {
+  margin: 0 0 1em;
+  color: var(--color-text-muted);
+}
+
+small {
+  font-size: 0.875rem;
+}
+
+a {
+  color: var(--color-accent-dark);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   3. Layout utilities / container
+   -------------------------------------------------------------------------- */
+
+/* The one and only "how wide is the page" rule. Every full-bleed section
+   wrapper below opts into it; nothing else declares its own max-width. */
+.public-header-inner,
+.public-hero-inner,
+.public-section,
+.public-footer-inner,
+.public-closing,
+.public-flash {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+.public-section {
+  padding-block: 5rem;
+}
+
+.public-section + .public-section {
+  padding-top: 0;
+}
+
+.public-section-head {
+  width: 100%;
+  max-width: none;
+  margin-bottom: 2rem;
+}
+
+.public-section-head h2 {
+  margin-bottom: 0.6rem;
+}
+
+.public-section-head p {
+  margin: 0;
+  max-width: none;
+}
+
+/* Internal pages (About, Areas of work, Projects, Experience, Send a
+   message, AI Guide) opt into this tighter vertical rhythm in addition to
+   .public-section above. Home's hero/directions/featured sections keep
+   the wider spacing that was already reviewed and approved, so they do
+   not carry this class and stay untouched by the rules below. */
+.public-page-section {
+  padding-block: 4rem;
+}
+
+.public-page-section + .public-page-section {
+  padding-top: 0;
+}
+
+.public-page-section > h1 {
+  margin-bottom: 2rem;
+}
+
+.public-page-section > p:first-of-type {
+  width: 100%;
+  max-width: none;
+  font-size: clamp(1.04rem, 1.3vw, 1.13rem);
+  line-height: 1.66;
+  margin-bottom: 2rem;
+}
+
+/* Projects is the only internal page split across three stacked
+   .public-page-section blocks with no grid inside the first one — without
+   this, its own padding-bottom (see .public-page-section) plus the intro
+   paragraph's margin-bottom above stack into the ~100-140px gap the human
+   review flagged between the page intro and "Selected systems". */
+#public-projects-intro {
+  padding-bottom: 1.25rem;
+}
+
+/* --------------------------------------------------------------------------
+   4. Accessibility
+   -------------------------------------------------------------------------- */
 
 .sr-only {
   position: absolute;
@@ -16,201 +255,1234 @@
   border: 0;
 }
 
+/* Taken out of normal flow entirely (position: absolute) and shifted off
+   the left edge of the initial containing block: it reserves no height or
+   margin in the document and cannot push the header down. It is restored
+   to the visible viewport only on :focus. */
 .public-skip-link {
   position: absolute;
   left: -999px;
   top: 0;
-  background: #fff;
-  color: #000;
-  padding: 0.5rem 1rem;
-  z-index: 10;
+  margin: 0;
+  background: var(--color-accent-dark);
+  color: #fff;
+  padding: 0.65rem 1.1rem;
+  border-radius: 0 0 var(--radius-sm) 0;
+  z-index: 100;
+  text-decoration: none;
+  font-weight: 600;
 }
 
 .public-skip-link:focus {
   left: 0;
 }
 
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  color: #1a1a1a;
-  background: #ffffff;
-  line-height: 1.5;
+:focus-visible {
+  outline: 3px solid var(--color-accent-soft);
+  outline-offset: 2px;
 }
 
-.public-header-inner,
-.public-section,
-.public-footer {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 1rem 1.25rem;
+/* --------------------------------------------------------------------------
+   5. Header / navigation / language switch
+   -------------------------------------------------------------------------- */
+
+.public-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  margin: 0;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-header);
 }
 
 .public-header-inner {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 1.5rem;
+  min-height: 76px;
 }
 
 .public-brand {
-  font-weight: 700;
-  text-decoration: none;
-  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.public-brand-logo {
+  width: 172px;
+  height: 56px;
+  object-fit: contain;
 }
 
 .public-nav-toggle {
   display: none;
-  border: 1px solid #ccc;
-  background: none;
-  padding: 0.4rem 0.6rem;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
   cursor: pointer;
 }
 
-.public-nav ul {
+.public-nav-toggle-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 20px;
+  height: 14px;
+}
+
+.public-nav-toggle-icon span {
+  display: block;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+}
+
+.public-nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.public-nav-list {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.75rem;
   margin: 0;
   padding: 0;
 }
 
-.public-nav a {
+.public-nav-list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-text);
   text-decoration: none;
-  color: inherit;
+  border-bottom: 2px solid transparent;
 }
 
-.public-nav a[aria-current="page"] {
-  font-weight: 700;
-  text-decoration: underline;
+.public-nav-list a:hover {
+  color: var(--color-accent-dark);
+}
+
+.public-nav-list a[aria-current="page"] {
+  color: var(--color-accent-dark);
+  border-bottom-color: var(--color-accent);
+  font-weight: 600;
 }
 
 .public-lang-switch {
   display: flex;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  gap: 0.4rem;
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--color-border);
+}
+
+.public-lang-switch a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.public-lang-switch a:hover {
+  color: var(--color-accent-dark);
 }
 
 .public-lang-switch a[aria-current="true"] {
-  font-weight: 700;
-  text-decoration: underline;
+  background: var(--color-accent-bg);
+  color: var(--color-accent-dark);
 }
 
-.public-provisional-notice {
-  font-size: 0.85rem;
-  color: #6b6b6b;
-  border: 1px dashed #ccc;
-  padding: 0.5rem 0.75rem;
-  margin-bottom: 1.5rem;
-}
+/* --------------------------------------------------------------------------
+   6. Buttons and shared components
+   -------------------------------------------------------------------------- */
 
-.public-pillars,
-.public-project-grid {
-  list-style: none;
-  margin: 1.5rem 0 0;
-  padding: 0;
-  display: grid;
-  gap: 1rem;
-}
-
-.public-pillar,
-.public-project-card {
-  border: 1px solid #ddd;
-  padding: 1rem;
-}
-
-.public-tag-list {
-  list-style: none;
+.public-cta-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 0;
-  margin: 1rem 0;
-}
-
-.public-tag-list li {
-  border: 1px solid #ccc;
-  padding: 0.15rem 0.5rem;
-  font-size: 0.8rem;
-}
-
-.public-form {
-  max-width: 480px;
-}
-
-.public-field {
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.public-field input,
-.public-field textarea {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  font: inherit;
-}
-
-.public-field-error {
-  color: #b3261e;
-  font-size: 0.85rem;
+  gap: 1rem;
+  margin: 0.5rem 0 0;
 }
 
 .public-btn {
-  padding: 0.6rem 1.2rem;
-  border: 1px solid #333;
-  background: #f5f5f5;
-  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.8rem 1.75rem;
+  border-radius: var(--radius-sm);
   font: inherit;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid var(--color-accent);
+  background: var(--color-accent);
+  color: #fff;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-.public-flash {
-  max-width: 960px;
-  margin: 1rem auto 0;
-  padding: 0 1.25rem;
+.public-btn:hover {
+  background: var(--color-accent-dark);
+  border-color: var(--color-accent-dark);
+  color: #fff;
+}
+
+.public-btn--secondary {
+  background: transparent;
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.public-btn--secondary:hover {
+  background: var(--color-surface-soft);
+  border-color: var(--color-accent-soft);
+  color: var(--color-accent-dark);
 }
 
 .public-alert {
-  padding: 0.6rem 0.9rem;
-  border: 1px solid #ccc;
-  margin-bottom: 0.5rem;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  background: var(--color-surface);
 }
 
 .public-alert--success {
-  border-color: #2f6b3a;
+  border-color: var(--color-success);
+  background: var(--color-success-bg);
+  color: var(--color-success);
 }
 
 .public-alert--danger,
 .public-alert--error {
-  border-color: #b3261e;
+  border-color: var(--color-danger);
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
 }
+
+.public-flash {
+  padding-block: 1.5rem 0;
+}
+
+.public-provisional-notice {
+  font-size: 0.9rem;
+  color: var(--color-text-faint);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+/* .public-tag-list itself is defined in §11 alongside .public-capability-list
+   as one shared compact-tag component (project technologies, experiment
+   topics and Areas-of-work capabilities all use the same visual language). */
+
+/* --------------------------------------------------------------------------
+   6b. Shared section heading (Home Directions / Featured projects)
+   -------------------------------------------------------------------------- */
+
+/* One shared scale for every top-level Home section heading, so "Areas of
+   work" (previously rendered as a small kicker, not a heading at all) and
+   "Selected projects" (previously the full generic 3rem h2) read as the
+   same level of hierarchy instead of wildly different sizes. */
+.public-section-heading {
+  font-size: clamp(2rem, 2.8vw, 2.75rem);
+  line-height: 1.15;
+}
+
+/* --------------------------------------------------------------------------
+   7. Home hero
+   -------------------------------------------------------------------------- */
+
+.public-hero {
+  padding-block: 2.75rem 3.25rem;
+}
+
+.public-hero-inner {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  align-items: center;
+  gap: clamp(2.5rem, 6vw, 5.5rem);
+}
+
+.public-hero-copy {
+  max-width: 680px;
+}
+
+.public-eyebrow {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-accent-dark);
+  margin: 0 0 1rem;
+}
+
+.public-hero-heading {
+  /* Deliberately larger than the generic internal-page h1 baseline above —
+     the Home hero keeps its own scale independent of the internal-page
+     compaction pass. */
+  font-size: clamp(3.35rem, 4.6vw, 4.45rem);
+  line-height: 1.03;
+  margin-bottom: 1rem;
+}
+
+.public-hero-intro {
+  font-size: clamp(1.1rem, 1.45vw, 1.24rem);
+  line-height: 1.52;
+  color: var(--color-text);
+  margin-bottom: 0.9rem;
+  max-width: none;
+}
+
+.public-hero-supporting {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1.75rem;
+  max-width: none;
+}
+
+.public-hero-visual {
+  display: flex;
+  justify-content: center;
+}
+
+.public-hero-visual-panel {
+  width: 100%;
+  max-width: 396px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 1.75rem;
+}
+
+.public-hero-visual-panel img {
+  width: 78%;
+  height: auto;
+  max-width: none;
+}
+
+/* --------------------------------------------------------------------------
+   8. Direction cards
+   -------------------------------------------------------------------------- */
+
+.public-direction-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.public-direction-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.625rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.public-direction-card:hover {
+  border-color: var(--color-accent-soft);
+  box-shadow: var(--shadow-card);
+}
+
+.public-direction-marker {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.2rem 0.65rem;
+  margin-bottom: 1rem;
+  align-self: flex-start;
+}
+
+.public-direction-card h3 {
+  margin-bottom: 0.5rem;
+}
+
+.public-direction-card p {
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  font-size: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   9. Featured projects
+   -------------------------------------------------------------------------- */
+
+.public-featured-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.public-featured-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 1.625rem;
+}
+
+.public-featured-card h3 {
+  margin: 0;
+}
+
+.public-featured-link {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.public-featured-link:hover {
+  color: var(--color-accent-dark);
+  text-decoration: underline;
+}
+
+.public-featured-summary {
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  color: var(--color-text-muted);
+}
+
+.public-featured-cta {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-accent-dark);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* --------------------------------------------------------------------------
+   9b. Shared project action row (Overview + Repository)
+   -------------------------------------------------------------------------- */
+
+/* One restrained action row shared by every project card (Home featured,
+   Projects overview, Project detail) that needs to show both an internal
+   Overview link and an external Repository link. margin-top: auto only has
+   an effect inside a flex column card (.public-featured-card,
+   .public-project-card), pushing the row to the bottom regardless of how
+   much copy precedes it; on the project detail page (a normal block flow,
+   not a flex card) it simply behaves as a normal top margin. */
+.public-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+/* Repository is an external link out of the site: identified by an arrow
+   glyph and underline rather than a large button, so it reads as a
+   secondary, external action next to Overview. */
+.public-repo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.public-repo-link:hover {
+  color: var(--color-accent-dark);
+}
+
+.public-repo-link::after {
+  content: "↗";
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   10. Closing section
+   -------------------------------------------------------------------------- */
+
+.public-closing-panel {
+  width: 100%;
+  background: var(--color-accent-bg);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  padding: 2rem 2.5rem;
+}
+
+/* Two-column editorial layout: heading on the left, full paragraph on the
+   right, instead of a full-width panel whose copy only ever used the left
+   half. minmax(0, ...) tracks (rather than bare percentages) let both
+   columns shrink below their content's min-content size instead of
+   overflowing the panel. */
+.public-closing-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 44%) minmax(0, 56%);
+  align-items: center;
+  gap: 2rem;
+}
+
+.public-closing-grid h2 {
+  font-size: clamp(1.9rem, 2.6vw, 2.5rem);
+  line-height: 1.12;
+  margin: 0;
+  max-width: none;
+}
+
+.public-closing-grid p {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+/* --------------------------------------------------------------------------
+   11. Generic inherited page styles
+   (About, Areas of work, Projects, Experience, Contact, AI Guide and
+   Project detail keep their existing markup in this stage and inherit
+   typography, color and spacing from the rules below.)
+   -------------------------------------------------------------------------- */
+
+.public-pillars {
+  list-style: none;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.public-pillar {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.625rem 1.75rem;
+}
+
+.public-pillar h2 {
+  font-size: clamp(1.18rem, 1.5vw, 1.38rem);
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+}
+
+.public-pillar p {
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  font-size: 1rem;
+  line-height: 1.66;
+}
+
+/* The closing paragraph in About follows the pillar list directly with no
+   spacer element of its own — without this, it visually collides with the
+   last card. It uses the same full container width as .public-pillar p so
+   it doesn't read as a narrower, detached epigraph under the full-width
+   cards above. */
+.public-pillars + p {
+  margin-top: 2rem;
+  width: 100%;
+  max-width: none;
+}
+
+/* Experience gets its own dedicated two-column grid instead of sharing the
+   single-column .public-pillars list — six stages read as a balanced 2x3
+   grid of taller cards, not a sequence of wide horizontal ones with an
+   artificially narrow text measure. Cards reuse .public-pillar styling
+   (padding, heading scale, body typography) directly. */
+.public-experience-grid {
+  list-style: none;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+/* Shared compact tag style for project technologies, experiment topics and
+   Areas-of-work capabilities — one visual language for every "short label
+   list" component instead of three near-duplicate rule sets. */
+.public-tag-list,
+.public-capability-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 1rem 0 0;
+  padding: 0;
+}
+
+.public-tag-list li,
+.public-capability-list li {
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-sm);
+  padding: 5px 9px;
+  font-size: 0.82rem;
+  line-height: 1.25;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+/* Areas of work / Направления gets its own dedicated 2x2 grid instead of
+   sharing the single-column .public-pillars list used by About and
+   Experience — four equal directions read as a balanced grid, not a
+   sequence of wide horizontal cards. */
+.public-expertise-grid {
+  list-style: none;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.public-expertise-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.625rem;
+}
+
+.public-expertise-card h3 {
+  margin-bottom: 0.5rem;
+}
+
+.public-expertise-card p {
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  font-size: 1rem;
+  line-height: 1.66;
+}
+
+.public-expertise-grid + .public-expertise-principle {
+  margin-top: 2.25rem;
+}
+
+.public-expertise-principle {
+  background: var(--color-accent-bg);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  padding: 2rem 2.25rem;
+}
+
+.public-expertise-principle h2 {
+  font-size: clamp(1.5rem, 2vw, 1.9rem);
+  line-height: 1.2;
+  margin-bottom: 0.6rem;
+}
+
+/* Two-column composition: a title column and a text column, instead of a
+   full-width panel whose paragraph only ever used the left half. The
+   descendant selectors above (h2 sizing) still apply at this nested depth;
+   these rules only add the grid layout and re-zero the heading's own
+   margin now that the grid's own gap provides the spacing. */
+.public-expertise-principle-grid {
+  display: grid;
+  grid-template-columns: 32% 1fr;
+  align-items: center;
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.public-expertise-principle-grid h2 {
+  margin-bottom: 0;
+}
+
+.public-expertise-principle-grid p {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.public-project-grid,
+.public-experiment-grid {
+  list-style: none;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.public-project-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 1.625rem;
+}
+
+.public-project-card h3 {
+  margin: 0 0 0.5rem;
+}
+
+.public-project-card h3 a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.public-project-card h3 a:hover {
+  color: var(--color-accent-dark);
+  text-decoration: underline;
+}
+
+.public-project-card p {
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  font-size: 1rem;
+  line-height: 1.66;
+}
+
+.public-project-link {
+  display: inline-block;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-accent-dark);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.public-experiment-card {
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  padding: 1.625rem;
+}
+
+.public-experiment-card h3 {
+  margin: 0 0 0.5rem;
+}
+
+.public-experiment-card p {
+  margin: 0 0 0.6rem;
+  width: 100%;
+  max-width: none;
+  font-size: 1rem;
+  line-height: 1.66;
+}
+
+.public-experiment-card a {
+  color: var(--color-accent-dark);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* Compact two-column ordered list, replacing five large full-width boxed
+   rows: a border-top separator between rows instead of a border around
+   every item, so the list reads as one connected sequence rather than five
+   repeated cards. */
+.public-guide-capabilities {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  width: 100%;
+  max-width: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+}
+
+.public-guide-capabilities li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  min-width: 0;
+  width: auto;
+  padding: 1rem 0.75rem;
+  border-top: 1px solid var(--color-border-soft);
+}
+
+/* The fifth item is the odd one out in a two-column grid; spanning both
+   columns keeps it balanced instead of leaving one empty cell. */
+.public-guide-capabilities li:last-child {
+  grid-column: 1 / -1;
+}
+
+.public-guide-number {
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-accent);
+}
+
+.public-guide-text {
+  width: 100%;
+  max-width: none;
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.public-ai-guide-notice {
+  width: 100%;
+  max-width: none;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  background: var(--color-surface-soft);
+  border-left: 3px solid var(--color-accent-soft);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1.1rem;
+  margin: 1.5rem 0;
+}
+
+.public-ai-guide-status {
+  width: 100%;
+  max-width: none;
+  color: var(--color-text-muted);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+}
+
+/* Project detail: .public-project-detail carries no width rule of its own —
+   its width is controlled only by the shared .public-section/.public-page-
+   section container rule in §3, the same as every other internal page. */
+.public-project-detail h2 {
+  font-size: clamp(1.7rem, 2.3vw, 2.25rem);
+}
+
+.public-project-detail-section {
+  width: 100%;
+  max-width: none;
+  margin-top: 1.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.public-project-detail-section:first-of-type {
+  margin-top: 2rem;
+}
+
+.public-project-detail-section p {
+  width: 100%;
+  max-width: none;
+  font-size: 1rem;
+  line-height: 1.68;
+}
+
+.public-project-detail-actions {
+  margin-top: 1rem;
+}
+
+.public-contact-note {
+  width: 100%;
+  max-width: none;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  border-left: 3px solid var(--color-border);
+  padding-left: 1rem;
+  margin: 1.25rem 0 2rem;
+}
+
+.public-form {
+  max-width: 560px;
+  margin-top: 2rem;
+}
+
+.public-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.public-field label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.public-field input,
+.public-field textarea {
+  font: inherit;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.public-field input:focus-visible,
+.public-field textarea:focus-visible {
+  outline: 3px solid var(--color-accent-soft);
+  outline-offset: 1px;
+  border-color: var(--color-accent);
+}
+
+.public-field-error {
+  color: var(--color-danger);
+  font-size: 0.9rem;
+}
+
+/* --------------------------------------------------------------------------
+   12. Footer
+   -------------------------------------------------------------------------- */
 
 .public-footer {
-  border-top: 1px solid #eee;
-  margin-top: 2rem;
-  font-size: 0.85rem;
-  color: #6b6b6b;
+  margin-top: 3.5rem;
+  background: var(--color-footer);
+  color: var(--color-footer-text);
 }
 
-@media (max-width: 640px) {
+.public-footer-inner {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr auto;
+  align-items: start;
+  gap: 2.25rem;
+  padding-block: 2.25rem 1.5rem;
+}
+
+.public-footer-logo {
+  width: 156px;
+  height: 51px;
+  object-fit: contain;
+}
+
+.public-footer-tagline {
+  margin: 0.85rem 0 0;
+  max-width: 38ch;
+  font-size: 1rem;
+  color: var(--color-footer-muted);
+}
+
+.public-footer-nav ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 0.6rem 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.public-footer-nav a {
+  color: var(--color-footer-text);
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.public-footer-nav a:hover {
+  color: var(--color-accent-soft);
+}
+
+.public-footer-nav a[aria-current="page"] {
+  color: var(--color-accent-soft);
+  font-weight: 600;
+}
+
+.public-footer-lang {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.public-footer-lang a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid rgba(238, 242, 239, 0.3);
+  border-radius: var(--radius-sm);
+  color: var(--color-footer-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.public-footer-lang a[aria-current="true"] {
+  color: var(--color-footer-text);
+  border-color: var(--color-footer-text);
+}
+
+.public-footer-bottom {
+  border-top: 1px solid rgba(238, 242, 239, 0.12);
+}
+
+.public-footer-bottom p {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0.85rem var(--container-padding);
+  font-size: 0.85rem;
+  color: var(--color-footer-muted);
+}
+
+/* --------------------------------------------------------------------------
+   13. Responsive breakpoints
+   -------------------------------------------------------------------------- */
+
+/* Desktop/tablet-only typographic refinement: justify long-form body copy
+   inside wide editorial blocks (About/Experience pillars, project detail
+   sections, the Home closing panel, the Areas-of-work common-principle
+   panel, and the AI Guide notice/capability text) now that these blocks
+   use the full available width. Left below 900px, where the narrower
+   measure makes justified text prone to uneven word spacing. Everything
+   else (headings, page intros, direction cards, project/experiment card
+   summaries, nav, buttons, tags, form controls) stays left-aligned at
+   every width. */
+@media (min-width: 900px) {
+  .public-pillar p,
+  .public-project-detail-section p,
+  .public-closing-grid p,
+  .public-expertise-principle-grid p,
+  .public-ai-guide-notice,
+  .public-guide-text {
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+  }
+}
+
+@media (max-width: 1080px) {
+  .public-footer-inner {
+    grid-template-columns: 1.2fr 1fr;
+  }
+
+  .public-footer-lang {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --container-padding: 1.5rem;
+  }
+
   .public-nav-toggle {
     display: inline-flex;
   }
 
   .public-nav {
     display: none;
-    width: 100%;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow-card);
+    padding: 1.25rem 1.5rem 1.5rem;
   }
 
   .public-nav.is-open {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
   }
 
-  .public-nav ul {
+  .public-nav-list {
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.9rem;
+    width: 100%;
+  }
+
+  .public-lang-switch {
+    width: 100%;
+    padding-left: 0;
+    padding-top: 1rem;
+    border-left: none;
+    border-top: 1px solid var(--color-border-soft);
+  }
+
+  .public-hero-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .public-hero-copy {
+    max-width: none;
+    order: 1;
+  }
+
+  .public-hero-visual {
+    order: 2;
+  }
+
+  .public-hero-visual-panel {
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 1.5rem;
+  }
+
+  .public-featured-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .public-project-grid,
+  .public-experiment-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .public-expertise-grid,
+  .public-experience-grid,
+  .public-guide-capabilities {
+    grid-template-columns: 1fr;
+  }
+
+  .public-guide-capabilities li:last-child {
+    grid-column: auto;
+  }
+
+  .public-closing-grid,
+  .public-expertise-principle-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .public-closing-grid h2,
+  .public-expertise-principle-grid h2 {
+    margin-bottom: 0.75rem;
+  }
+
+  .public-section {
+    padding-block: 4rem;
+  }
+
+  .public-page-section {
+    padding-block: 2.75rem;
+  }
+
+  .public-page-section > h1 {
+    margin-bottom: 1.5rem;
+  }
+
+  .public-page-section > p:first-of-type {
+    margin-bottom: 2.25rem;
+  }
+
+  .public-footer-nav ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --container-padding: 1.125rem;
+  }
+
+  .public-header-inner {
+    min-height: 64px;
+  }
+
+  .public-brand-logo {
+    width: 140px;
+    height: 46px;
+  }
+
+  .public-section {
+    padding-block: 3.25rem;
+  }
+
+  .public-page-section {
+    padding-block: 2.5rem;
+  }
+
+  .public-pillar,
+  .public-direction-card,
+  .public-expertise-card,
+  .public-featured-card,
+  .public-project-card,
+  .public-experiment-card {
+    padding: 1.25rem 1.375rem;
+  }
+
+  .public-pillars,
+  .public-direction-grid,
+  .public-expertise-grid,
+  .public-experience-grid,
+  .public-featured-grid,
+  .public-project-grid,
+  .public-experiment-grid {
+    gap: 1rem;
+  }
+
+  .public-direction-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .public-featured-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .public-project-grid,
+  .public-experiment-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .public-footer-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .public-closing-panel {
+    padding: 2rem 1.5rem;
+  }
+
+  .public-cta-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .public-cta-group .public-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .public-hero-visual-panel {
+    padding: 1.5rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   14. Reduced motion
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  /* !important is unavoidable here: this rule must override every
+     component-level transition declared above (buttons, cards, nav)
+     regardless of selector specificity or source order. */
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
   }
 }

@@ -70,14 +70,16 @@
       "title": "Rise and Shine",
       "summary": "A personal experiment with multimodal scenarios and the ways different kinds of input can participate in one user experience.",
       "focus": "Exploring multimodality, context and interaction between a user and an AI system.",
-      "topics": ["Multimodality", "Context", "AI prototyping"]
+      "topics": ["Multimodality", "Context", "AI prototyping"],
+      "repo_url": "https://github.com/eliv1982/rise-and-shine-bot"
     },
     {
       "id": "moodmuse",
       "title": "MoodMuse",
       "summary": "An experimental project exploring multimodality, mood and generative interaction.",
       "focus": "Exploring how different signals and formats can create a more expressive and context-aware AI experience.",
-      "topics": ["Multimodality", "Generative scenarios", "Experimental interface"]
+      "topics": ["Multimodality", "Generative scenarios", "Experimental interface"],
+      "repo_url": "https://github.com/eliv1982/moodmuse-bot"
     },
     {
       "id": "weather-teller",
